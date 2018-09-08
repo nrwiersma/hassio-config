@@ -6,7 +6,7 @@ homeassistant:
   unit_system: metric
   time_zone: Africa/Johannesburg
   customize: !include customize.yaml
-  pacakges: !include_dir_named packages
+  packages: !include_dir_named packages
 
 # Enables the frontend
 frontend:
@@ -35,6 +35,9 @@ recorder:
 
 # Enables a map showing the location of tracked devices
 map:
+
+# Track the sun
+sun:
 
 # Text to speech
 tts:
