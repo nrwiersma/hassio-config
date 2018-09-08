@@ -1,6 +1,7 @@
 *
 !packages
-!*.yaml
 !.gitignore
+!.travis.yml
+!*.yaml
 secrets.yaml
 known_devices.yaml
