@@ -1,0 +1,6 @@
+# Sun
+sun:
+
+# Weather
+sensor:
+  - platform: yr

@@ -1,0 +1,35 @@
+# Lights
+light:
+  - platform: mqtt
+    name: "Night"
+    state_topic: "stat/kitchen/POWER1"
+    command_topic: "cmnd/kitchen/POWER1"
+    availability_topic: "tele/kitchen/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  - platform: mqtt
+    name: "Dining Room"
+    state_topic: "stat/kitchen/POWER2"
+    command_topic: "cmnd/kitchen/POWER2"
+    availability_topic: "tele/kitchen/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  - platform: mqtt
+    name: "Kitchen"
+    state_topic: "stat/kitchen/POWER3"
+    command_topic: "cmnd/kitchen/POWER3"
+    availability_topic: "tele/kitchen/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false

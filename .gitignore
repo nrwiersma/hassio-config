@@ -1,4 +1,5 @@
 *
+!packages
 !*.yaml
 !.gitignore
 secrets.yaml
