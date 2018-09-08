@@ -1,0 +1,67 @@
+homeassistant:
+  name: Home
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
+  unit_system: metric
+  time_zone: Africa/Johannesburg
+  customize: !include customize.yaml
+  pacakges: !include_dir_named packages
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+
+# Updates
+updater:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Purge database interval
+recorder:
+  purge_interval: 2
+  purge_keep_days: 14
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+# MQTT
+mqtt:
+  broker: localhost
+  port: 1883
+  client_id: home-assistant
+  keepalive: 60
+  protocol: 3.1
+  birth_message:
+    topic: "tele/hass/LWT"
+    payload: "Online"
+    qos: 1
+    retain: true
+  will_message:
+    topic: "tele/hass/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: true
+
+# Includes =================================
+
+group: !include groups.yaml
+script: !include scripts.yaml
