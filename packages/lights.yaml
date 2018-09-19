@@ -1,5 +1,6 @@
 # Lights
 light:
+  # Kitchen Switch
   - platform: mqtt
     name: "Night"
     state_topic: "stat/kitchen/POWER1"
@@ -33,11 +34,47 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+  # Lounge Switch
   - platform: mqtt
     name: "Lounge"
     state_topic: "stat/lounge/POWER"
     command_topic: "cmnd/lounge/POWER"
     availability_topic: "tele/lounge/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  # Study Switch
+  - platform: mqtt
+    name: "Study"
+    state_topic: "stat/study/POWER"
+    command_topic: "cmnd/study/POWER"
+    availability_topic: "tele/study/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  # Bedroom Switch
+  - platform: mqtt
+    name: "Bedroom"
+    state_topic: "stat/bedroom/POWER1"
+    command_topic: "cmnd/bedroom/POWER1"
+    availability_topic: "tele/bedroom/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  - platform: mqtt
+    name: "Ensuite"
+    state_topic: "stat/bedroom/POWER2"
+    command_topic: "cmnd/bedroom/POWER2"
+    availability_topic: "tele/bedroom/LWT"
     qos: 1
     payload_on: "ON"
     payload_off: "OFF"
