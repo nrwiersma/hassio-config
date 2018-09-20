@@ -81,3 +81,19 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+
+# Automation ===============================
+
+automation:
+    - alias: 'Turn on light when arriving home'
+        trigger:
+            - platform: state
+              entity_id: group.all_devices
+              to: 'home'
+        condition:
+            - condition: time
+              after: '16:00:00'
+              before: '23:00:00'
+        action:
+            service: light.turn_on
+            entity_id: light.night
