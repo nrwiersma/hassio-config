@@ -85,7 +85,7 @@ light:
 # Automation ===============================
 
 automation:
-  - alias: "Arrival Mode"
+  - alias: Arrival Mode
         trigger:
           - platform: state
             entity_id: group.all_devices
@@ -98,7 +98,7 @@ automation:
             service: light.turn_on
             entity_id: light.night
 
-  - alias: "Away Mode"
+  - alias: Away Mode
         trigger:
             platform: state
             entity_id: group.all_devices
