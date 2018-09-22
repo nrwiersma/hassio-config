@@ -34,6 +34,20 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+
+  # Bar Switch
+  - platform: mqtt
+    name: "Bar"
+    state_topic: "stat/bar/POWER"
+    command_topic: "cmnd/bar/POWER"
+    availability_topic: "tele/bar/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+
   # Lounge Switch
   - platform: mqtt
     name: "Lounge"
@@ -46,6 +60,20 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+
+  # Verandah Switch
+  - platform: mqtt
+    name: "Verandah"
+    state_topic: "stat/verandah/POWER1"
+    command_topic: "cmnd/verandah/POWER1"
+    availability_topic: "tele/verandah/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+
   # Study Switch
   - platform: mqtt
     name: "Study"
@@ -58,6 +86,7 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+
   # Bedroom Switch
   - platform: mqtt
     name: "Bedroom"
