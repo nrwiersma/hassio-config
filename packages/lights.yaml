@@ -50,7 +50,7 @@ light:
 
   # Lounge Switch
   - platform: mqtt
-    name: "Lounge"
+    name: "Lounge Main"
     state_topic: "stat/lounge/POWER"
     command_topic: "cmnd/lounge/POWER"
     availability_topic: "tele/lounge/LWT"
@@ -60,6 +60,36 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+  # Lounge Lamp 1
+  - platform: mqtt
+    name: "Lounge Lamp 1"
+    state_topic: "stat/lounge-lamp-1/POWER"
+    command_topic: "cmnd/lounge-lamp-1/POWER"
+    availability_topic: "tele/lounge-lamp-1/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  # Lounge Lamp 2
+  - platform: mqtt
+    name: "Lounge Lamp 2"
+    state_topic: "stat/lounge-lamp-2/POWER"
+    command_topic: "cmnd/lounge-lamp-2/POWER"
+    availability_topic: "tele/lounge-lamp-2/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  # Lounge Lamps
+  - platform: group
+    name: "Lounge Lamps"
+    entities:
+      - light.lounge_lamp_1
+      - light.lounge_lamp_2
 
   # Verandah Switch
   - platform: mqtt
@@ -114,6 +144,24 @@ light:
 # Automation ===============================
 
 automation:
+  - alias: Lounge Lamps On
+    trigger:
+        platform: mqtt
+        topic: "cmnd/lounge-lamps/POWER"
+        payload: 'ON'
+    action:
+        service: light.turn_on
+        entity_id: light.lounge_lamps
+
+  - alias: Lounge Lamps Off
+    trigger:
+        platform: mqtt
+        topic: "cmnd/lounge-lamps/POWER"
+        payload: 'OFF'
+    action:
+        service: light.turn_off
+        entity_id: light.lounge_lamps
+
   - alias: Arrival Mode
     trigger:
       - platform: state
