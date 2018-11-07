@@ -3,3 +3,6 @@ homekit:
   filter:
     include_domains:
       - light
+    exclude_entities:
+      - light.lounge_lamp_1
+      - light.lounge_lamp_2
