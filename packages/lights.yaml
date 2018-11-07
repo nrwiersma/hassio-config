@@ -144,22 +144,13 @@ light:
 # Automation ===============================
 
 automation:
-  - alias: Lounge Lamps On
+  - alias: Lounge Lamps Toggle
     trigger:
         platform: mqtt
         topic: "cmnd/lounge-lamps/POWER"
-        payload: 'ON'
+        payload: 'TOGGLE'
     action:
-        service: light.turn_on
-        entity_id: light.lounge_lamps
-
-  - alias: Lounge Lamps Off
-    trigger:
-        platform: mqtt
-        topic: "cmnd/lounge-lamps/POWER"
-        payload: 'OFF'
-    action:
-        service: light.turn_off
+        service: light.toggle
         entity_id: light.lounge_lamps
 
   - alias: Arrival Mode
