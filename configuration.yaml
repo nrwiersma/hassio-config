@@ -42,8 +42,8 @@ map:
 sun:
 
 # Text to speech
-google_translate:
-  - platform: google
+tts:
+  - platform: google_translate
 
 # Cloud
 cloud:
