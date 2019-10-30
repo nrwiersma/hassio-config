@@ -42,7 +42,7 @@ map:
 sun:
 
 # Text to speech
-tts:
+google_translate:
   - platform: google
 
 # Cloud
