@@ -43,7 +43,7 @@ sun:
 
 # Text to speech
 tts:
-  - platform: google
+  - platform: google_translate
 
 # Cloud
 cloud:

@@ -1,11 +1,7 @@
-# Device Tracker
-device_tracker:
-  - platform: unifi
-    host: !secret unifi_host
-    username: !secret unifi_username
-    password: !secret unifi_password
-    verify_ssl: false
-    ssid_filter:
-      - !secret unifi_ssid
-    new_device_defaults:
-      track_new_devices: false
+# Unifi Device Tracker
+unifi:
+  controllers:
+    - host: !secret unifi_host
+      site: Home
+      ssid_filter:
+        - !secret unifi_ssid
