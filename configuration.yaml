@@ -48,6 +48,9 @@ tts:
 # Cloud
 cloud:
 
+# System health
+system_health:
+
 # MQTT
 mqtt:
   broker: localhost
