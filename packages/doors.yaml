@@ -4,6 +4,6 @@ binary_sensor:
     name: “Rear Door”
     state_topic: "tele/rf/RESULT"
     value_template: “{{ value_json.RfReceived.Data }}”
-    payload_on: “94A50E”
-    payload_off: “94A50A”
+    payload_on: “94A50A”
+    payload_off: “94A50E”
     device_class: door
