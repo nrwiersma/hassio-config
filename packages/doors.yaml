@@ -1,0 +1,9 @@
+# Doors
+binary_sensor:
+  - platform: mqtt
+    name: “Rear Door”
+    state_topic: "tele/rf/RESULT"
+    value_template: “{{ value_json.RfReceived.Data }}”
+    payload_on: “94A50E”
+    payload_off: “94A50A”
+    device_class: door
