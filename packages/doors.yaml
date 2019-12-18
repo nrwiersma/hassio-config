@@ -7,3 +7,17 @@ binary_sensor:
     payload_on: "94A50A"
     payload_off: "94A50E"
     device_class: door
+  - platform: mqtt
+    name: "Front Door"
+    state_topic: "tele/rf/RESULT"
+    value_template: "{{ value_json.RfReceived.Data }}"
+    payload_on: "92550A"
+    payload_off: "92550E"
+    device_class: door
+  - platform: mqtt
+    name: "Kitchen Door"
+    state_topic: "tele/rf/RESULT"
+    value_template: "{{ value_json.RfReceived.Data }}"
+    payload_on: "941B0A"
+    payload_off: "941B0E"
+    device_class: door
