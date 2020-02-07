@@ -156,7 +156,7 @@ automation:
   - alias: Arrival Mode
     trigger:
       - platform: state
-        entity_id: group.all_devices
+        entity_id: group.everyone
         to: "home"
     condition:
       - condition: time
@@ -169,7 +169,7 @@ automation:
   - alias: Away Mode
     trigger:
         platform: state
-        entity_id: group.all_devices
+        entity_id: group.everyone
         to: "not_home"
     action:
         service: light.turn_off
