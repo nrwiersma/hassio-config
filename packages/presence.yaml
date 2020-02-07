@@ -5,3 +5,23 @@ unifi:
       site: Home
       ssid_filter:
         - !secret unifi_ssid
+
+# People
+person:
+  - name: Monika
+    id: monika
+    device_trackers:
+      - device_tracker.monikas_iphone
+  - name: Nick
+    id: nick
+    user_id: aa017c1bf9054ac8ae8e85d6d0e91aca
+    device_trackers:
+      - device_tracker.nicks_iphone
+
+# Custom everyone group
+group:
+  everyone:
+    name: everyone
+    entities:
+      - person.monika
+      - person.nick
