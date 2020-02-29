@@ -47,6 +47,18 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+  # Bar Lamp
+  - platform: mqtt
+    name: "Bar Lamp"
+    state_topic: "stat/bar-lamp/POWER"
+    command_topic: "cmnd/bar-lamp/POWER"
+    availability_topic: "tele/bar-lamp/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
 
   # Lounge Switch
   - platform: mqtt
@@ -152,6 +164,14 @@ automation:
     action:
         service: light.toggle
         entity_id: light.lounge_lamps
+  - alias: Bar Lamps Toggle
+    trigger:
+        platform: mqtt
+        topic: "cmnd/bar-lamps/POWER"
+        payload: 'TOGGLE'
+    action:
+        service: light.toggle
+        entity_id: light.bar_lamp
 
   - alias: Arrival Mode
     trigger:
