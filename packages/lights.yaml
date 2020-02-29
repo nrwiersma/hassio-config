@@ -59,6 +59,12 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
+  # Lounge Lamps
+  - platform: group
+    name: "Bar Lights"
+    entities:
+      - light.bar_lamp
+      - light.bar
 
   # Lounge Switch
   - platform: mqtt
@@ -171,7 +177,7 @@ automation:
         payload: 'TOGGLE'
     action:
         service: light.toggle
-        entity_id: light.bar_lamp
+        entity_id: light.bar_lights
 
   - alias: Arrival Mode
     trigger:
