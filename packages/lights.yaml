@@ -159,6 +159,19 @@ light:
     payload_not_available: "Offline"
     retain: false
 
+  # Entrace Switch
+  - platform: mqtt
+    name: "Entrance"
+    state_topic: "stat/entrance/POWER1"
+    command_topic: "cmnd/entrance/POWER1"
+    availability_topic: "tele/entrance/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+
 # Automation ===============================
 
 automation:
@@ -190,7 +203,7 @@ automation:
         before: "23:00:00"
     action:
         service: light.turn_on
-        entity_id: light.night
+        entity_id: light.entrance
 
   - alias: Away Mode
     trigger:
