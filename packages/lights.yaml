@@ -162,8 +162,8 @@ light:
   # Entrace Switch
   - platform: mqtt
     name: "Entrance"
-    state_topic: "stat/entrance/POWER1"
-    command_topic: "cmnd/entrance/POWER1"
+    state_topic: "stat/entrance/POWER"
+    command_topic: "cmnd/entrance/POWER"
     availability_topic: "tele/entrance/LWT"
     qos: 1
     payload_on: "ON"
