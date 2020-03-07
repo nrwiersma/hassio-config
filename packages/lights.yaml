@@ -59,7 +59,7 @@ light:
     payload_available: "Online"
     payload_not_available: "Offline"
     retain: false
-  # Lounge Lamps
+  # Bar Lights
   - platform: group
     name: "Bar Lights"
     entities:
@@ -165,6 +165,58 @@ light:
     state_topic: "stat/entrance/POWER"
     command_topic: "cmnd/entrance/POWER"
     availability_topic: "tele/entrance/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+
+  # Hallway Switch
+  - platform: mqtt
+    name: "Hallway"
+    state_topic: "stat/hallway/POWER"
+    command_topic: "cmnd/hallway/POWER"
+    availability_topic: "tele/hallway/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+
+  # Breezeway Switch
+  - platform: mqtt
+    name: "Breezeway"
+    state_topic: "stat/breezeway/POWER"
+    command_topic: "cmnd/breezeway/POWER"
+    availability_topic: "tele/breezeway/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+
+  # Bathroom Switch
+  - platform: mqtt
+    name: "Bathroom"
+    state_topic: "stat/bathroom/POWER"
+    command_topic: "cmnd/bathroom/POWER"
+    availability_topic: "tele/bathroom/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+
+  # Toilet Switch
+  - platform: mqtt
+    name: "Toilet"
+    state_topic: "stat/toilet/POWER"
+    command_topic: "cmnd/toilet/POWER"
+    availability_topic: "tele/toilet/LWT"
     qos: 1
     payload_on: "ON"
     payload_off: "OFF"
