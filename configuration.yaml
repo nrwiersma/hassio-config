@@ -16,6 +16,10 @@ config:
 
 hassio:
 
+mobile_app:
+
+discovery:
+
 http:
 
 # Updates
@@ -50,9 +54,6 @@ cloud:
 
 # System health
 system_health:
-
-# API
-api:
 
 # MQTT
 mqtt:
