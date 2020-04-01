@@ -16,10 +16,6 @@ config:
 
 hassio:
 
-mobile_app:
-
-discovery:
-
 http:
 
 # Updates
