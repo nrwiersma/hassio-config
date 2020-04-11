@@ -17,6 +17,8 @@ config:
 hassio:
 
 http:
+  cors_allowed_origins:
+    - *
 
 # Updates
 updater:
