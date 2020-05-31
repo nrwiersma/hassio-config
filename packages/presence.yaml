@@ -1,10 +1,10 @@
 # Unifi Device Tracker
-unifi:
-  controllers:
-    - host: !secret unifi_host
-      site: Home
-      ssid_filter:
-        - !secret unifi_ssid
+#unifi:
+#  controllers:
+#    - host: !secret unifi_host
+#      site: Home
+#      ssid_filter:
+#        - !secret unifi_ssid
 
 # People
 person:
