@@ -21,3 +21,17 @@ binary_sensor:
     payload_on: "941B0A"
     payload_off: "941B0E"
     device_class: door
+  - platform: mqtt
+    name: "Garage Door Right"
+    state_topic: "tele/rf/RESULT"
+    value_template: "{{ value_json.RfReceived.Data }}"
+    payload_on: "010101"
+    payload_off: "010102"
+    device_class: door
+  - platform: mqtt
+    name: "Garage Door Left"
+    state_topic: "tele/rf/RESULT"
+    value_template: "{{ value_json.RfReceived.Data }}"
+    payload_on: "010103"
+    payload_off: "010104"
+    device_class: door
