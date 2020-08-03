@@ -227,6 +227,16 @@ light:
 # Automation ===============================
 
 automation:
+  - alias: Sync Tasmota states
+    initial_state: true
+    trigger:
+      platform: homeassistant
+      event: start
+    action:
+      service: mqtt.publish
+      data:
+        topic: cmnd/tasmotas/state
+        payload: ''
   - alias: Lounge Lamps Toggle
     trigger:
         platform: mqtt
