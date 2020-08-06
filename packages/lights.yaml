@@ -235,7 +235,7 @@ automation:
     action:
       service: mqtt.publish
       data:
-        topic: cmnd/tasmotas/state
+        topic: cmnd/tasmotas/POWER0
         payload: ''
   - alias: Lounge Lamps Toggle
     trigger:
