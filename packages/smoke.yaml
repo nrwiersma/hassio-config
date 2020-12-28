@@ -1,4 +1,4 @@
-# Doors
+# Smoke Detector
 binary_sensor:
   - platform: mqtt
     name: "Smoke Detector"
@@ -7,3 +7,15 @@ binary_sensor:
     payload_on: "A63166"
     off_delay: 1800
     device_class: smoke
+
+# Automation ===============================
+
+automation:
+  - alias: Fire Fire Fire
+    trigger:
+        platform: state
+        entity_id: binary_sensor.smoke_detector
+        to: 'on'
+    action:
+        service: light.turn_on
+        entity_id: all
