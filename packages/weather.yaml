@@ -1,3 +1,0 @@
-# Weather
-sensor:
-  - platform: weather_data
