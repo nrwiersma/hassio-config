@@ -34,7 +34,6 @@ logbook:
 
 # Purge database interval
 recorder:
-  purge_interval: 2
   purge_keep_days: 14
 
 # Enables a map showing the location of tracked devices
