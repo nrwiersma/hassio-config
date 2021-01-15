@@ -5,6 +5,12 @@
 #      site: Home
 #      ssid_filter:
 #        - !secret unifi_ssid
+device_tracker:
+  - platform: nmap_tracker
+    hosts:
+      - 10.0.0.200
+      - 10.0.0.201
+    scan_options: " --privileged -sn "
 
 # People
 person:
@@ -17,12 +23,6 @@ person:
     user_id: aa017c1bf9054ac8ae8e85d6d0e91aca
     device_trackers:
       - device_tracker.nicks_iphone
-
-device_tracker:
-  - platform: nmap_tracker
-    hosts:
-      - 10.0.0.200-201
-    scan_options: " --privileged -sn "
 
 # Custom everyone group
 group:
