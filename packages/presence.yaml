@@ -18,6 +18,12 @@ person:
     device_trackers:
       - device_tracker.nicks_iphone
 
+device_tracker:
+  - platform: nmap_tracker
+    hosts:
+      - 10.0.0.200-201
+    scan_options: " --privileged -sn "
+
 # Custom everyone group
 group:
   everyone:
