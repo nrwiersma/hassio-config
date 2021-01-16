@@ -1,16 +1,11 @@
-# Unifi Device Tracker
-#unifi:
-#  controllers:
-#    - host: !secret unifi_host
-#      site: Home
-#      ssid_filter:
-#        - !secret unifi_ssid
-device_tracker:
-  - platform: nmap_tracker
-    hosts:
-      - 10.0.0.200
-      - 10.0.0.201
-    scan_options: " --privileged -sn "
+# Presence
+input_boolean:
+  nick_present:
+    name: Nick
+    icon: mdi:account
+  monika_present:
+    name: Monika
+    icon: mdi:account
 
 # People
 person:

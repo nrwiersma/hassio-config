@@ -1,6 +1,9 @@
 # Homekit
 homekit:
   filter:
+    include_entities:
+      - input_boolean.nick_present
+      - input_boolean.monika_present
     include_domains:
       - light
     exclude_entities:
