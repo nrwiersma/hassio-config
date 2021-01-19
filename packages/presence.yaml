@@ -1,12 +1,3 @@
-# Presence
-input_boolean:
-  nick_present:
-    name: Nick
-    icon: mdi:account
-  monika_present:
-    name: Monika
-    icon: mdi:account
-
 # People
 person:
   - name: Monika
