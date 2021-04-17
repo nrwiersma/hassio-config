@@ -47,6 +47,6 @@ cover:
     payload_stop: "ON"
     state_open: "ON"
     state_closed: "OFF"
-    optomistic: false
+    optimistic: false
     retain: false
     device_class: garage
