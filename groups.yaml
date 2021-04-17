@@ -1,0 +1,7 @@
+garage_doors:
+    name: Garage Doors
+    view: no
+    control: hidden
+    icon: mdi:garage
+    entities:
+    - cover.garage_door_right_test

@@ -35,3 +35,18 @@ binary_sensor:
     payload_on: "010103"
     payload_off: "010104"
     device_class: door
+
+# Garage Doors
+cover:
+  - platform: mqtt
+    name: "Garage Door Right Test"
+    state_topic: "cmnd/garage_right_sensor/POWER2"
+    command_topic: "cmnd/garage_right/POWER"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "ON"
+    state_closed: "OFF"
+    optomistic: false
+    retain: false
+    device_class: garage
