@@ -22,13 +22,6 @@ binary_sensor:
     payload_off: "941B0E"
     device_class: door
   - platform: mqtt
-    name: "Garage Door Right"
-    state_topic: "tele/rf/RESULT"
-    value_template: "{{ value_json.RfReceived.Data }}"
-    payload_on: "010101"
-    payload_off: "010102"
-    device_class: door
-  - platform: mqtt
     name: "Garage Door Left"
     state_topic: "tele/rf/RESULT"
     value_template: "{{ value_json.RfReceived.Data }}"
@@ -39,7 +32,7 @@ binary_sensor:
 # Garage Doors
 cover:
   - platform: mqtt
-    name: "Garage Door Right Test"
+    name: "Garage Door Right"
     state_topic: "cmnd/garage_right_sensor/POWER2"
     command_topic: "cmnd/garage_right/POWER"
     payload_open: "ON"
