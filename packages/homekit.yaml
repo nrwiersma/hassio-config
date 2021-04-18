@@ -5,6 +5,7 @@ homekit:
       - input_boolean.nick_present
       - input_boolean.monika_present
     include_domains:
+      - cover
       - light
     exclude_entities:
       - light.lounge_lamp_1
