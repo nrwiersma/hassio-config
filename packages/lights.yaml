@@ -224,6 +224,18 @@ light:
     payload_not_available: "Offline"
     retain: false
 
+  # Driveway Switch
+  - platform: mqtt
+    name: "Driveway"
+    state_topic: "stat/driveway/POWER"
+    command_topic: "cmnd/driveway/POWER"
+    availability_topic: "tele/driveway/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
 # Automation ===============================
 
 automation:
@@ -260,9 +272,6 @@ automation:
         entity_id: group.everyone
         to: "home"
     condition:
-      - condition: time
-        after: "18:00:00"
-        before: "23:00:00"
     action:
         service: light.turn_on
         entity_id: light.entrance
@@ -274,4 +283,3 @@ automation:
         to: "not_home"
     action:
         service: light.turn_off
-        entity_id: all
