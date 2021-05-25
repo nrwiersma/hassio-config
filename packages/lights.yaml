@@ -237,23 +237,6 @@ light:
     payload_not_available: "Offline"
     retain: false
 
-  # Lounge Lamps
-  - platform: group
-    name: "Interior"
-    data_template:
-        entities: >-
-            {% set filter = ['light.driveway'] %}
-            {% set names = states.light
-            | rejectattr('entity_id','in', filter)
-            | map(attribute = 'entity_id')
-            | join(',')
-            %}
-            {% if names.count('.') >= 1 %}
-            {{ names }}
-            {% else %}
-            light.dummy
-            {% endif %}
-
 # Automation ===============================
 
 automation:
@@ -290,8 +273,7 @@ automation:
         entity_id: group.everyone
         to: "home"
     condition:
-      - alias: "Sun down"
-        condition: state  # from sunset until sunrise
+      - condition: state  # from sunset until sunrise
         entity_id: sun.sun
         state: "below_horizon"
     action:
@@ -305,4 +287,16 @@ automation:
         to: "not_home"
     action:
         service: light.turn_off
-        entity_id: light.interior
+        data_template:
+            entity_id: >-
+                {% set filter = ['light.driveway'] %}
+                {% set names = states.light
+                | rejectattr('entity_id','in', filter)
+                | map(attribute = 'entity_id')
+                | join(',')
+                %}
+                {% if names.count('.') >= 1 %}
+                {{ names }}
+                {% else %}
+                light.dummy
+                {% endif %}
