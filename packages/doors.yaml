@@ -32,6 +32,8 @@ cover:
     payload_open: "ON"
     payload_close: "ON"
     payload_stop: "ON"
+    payload_available: "Online"
+    payload_not_available: "Offline"
     state_open: "ON"
     state_closed: "OFF"
     optimistic: false
@@ -45,6 +47,8 @@ cover:
     payload_open: "ON"
     payload_close: "ON"
     payload_stop: "ON"
+    payload_available: "Online"
+    payload_not_available: "Offline"
     state_open: "ON"
     state_closed: "OFF"
     optimistic: false
