@@ -46,6 +46,9 @@ sun:
 tts:
   - platform: google_translate
 
+# Mobile App
+mobile_app:
+
 # Cloud
 cloud:
 
