@@ -1,15 +1,3 @@
-# People
-person:
-  - name: Monika
-    id: monika
-    device_trackers:
-      - device_tracker.monikas_iphone
-  - name: Nick
-    id: nick
-    user_id: 1f68ae21a2a4484f92e48973aad65935
-    device_trackers:
-      - device_tracker.nicks_iphone
-
 # Custom everyone group
 group:
   everyone:
