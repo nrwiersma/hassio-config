@@ -38,8 +38,19 @@ light:
   # Bar Switch
   - platform: mqtt
     name: "Bar"
-    state_topic: "stat/bar/POWER"
-    command_topic: "cmnd/bar/POWER"
+    state_topic: "stat/bar/POWER1"
+    command_topic: "cmnd/bar/POWER1"
+    availability_topic: "tele/bar/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+  - platform: mqtt
+    name: "Verandah"
+    state_topic: "stat/bar/POWER2"
+    command_topic: "cmnd/bar/POWER2"
     availability_topic: "tele/bar/LWT"
     qos: 1
     payload_on: "ON"
@@ -109,12 +120,12 @@ light:
       - light.lounge_lamp_1
       - light.lounge_lamp_2
 
-  # Verandah Switch
+  # Outside Switch
   - platform: mqtt
-    name: "Verandah"
-    state_topic: "stat/verandah/POWER1"
-    command_topic: "cmnd/verandah/POWER1"
-    availability_topic: "tele/verandah/LWT"
+    name: "Outside"
+    state_topic: "stat/outside/POWER"
+    command_topic: "cmnd/outside/POWER"
+    availability_topic: "tele/outside/LWT"
     qos: 1
     payload_on: "ON"
     payload_off: "OFF"
