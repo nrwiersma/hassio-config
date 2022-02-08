@@ -1,7 +1,7 @@
 # Doors
 binary_sensor:
   - platform: mqtt
-    name: "Verandah Door"
+    name: "Outside Door"
     state_topic: "tele/rf/RESULT"
     value_template: "{{ value_json.RfReceived.Data }}"
     payload_on: "94A50A"
@@ -20,6 +20,13 @@ binary_sensor:
     value_template: "{{ value_json.RfReceived.Data }}"
     payload_on: "941B0A"
     payload_off: "941B0E"
+    device_class: door
+  - platform: mqtt
+    name: "Verandah Door"
+    state_topic: "tele/rf/RESULT"
+    value_template: "{{ value_json.RfReceived.Data }}"
+    payload_on: "90750A"
+    payload_off: "90750E"
     device_class: door
 
 # Garage Doors
