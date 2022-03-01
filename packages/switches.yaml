@@ -4,9 +4,9 @@ switch:
     name: "Garage Geyser"
     device_class: "switch"
     icon: "mdi:water-boiler"
-    state_topic: "stat/kitchen/POWER1"
-    command_topic: "cmnd/kitchen/POWER1"
-    availability_topic: "tele/kitchen/LWT"
+    state_topic: "stat/garage-geyser/POWER1"
+    command_topic: "cmnd/garage-geyser/POWER1"
+    availability_topic: "tele/garage-geyser/LWT"
     qos: 0
     payload_on: "ON"
     payload_off: "OFF"
