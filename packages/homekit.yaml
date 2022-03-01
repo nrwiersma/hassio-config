@@ -4,10 +4,10 @@ homekit:
     include_entities:
       - input_boolean.nick_present
       - input_boolean.monika_present
+      - switch.garage-geyser
     include_domains:
       - cover
       - light
-      - switch
     exclude_entities:
       - light.lounge_lamp_1
       - light.lounge_lamp_2
