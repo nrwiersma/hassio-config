@@ -1,0 +1,15 @@
+# Lights
+switch:
+  - platform: mqtt
+    name: "Garage Geyser"
+    device_class: "switch"
+    icon: "mdi:water-boiler"
+    state_topic: "stat/kitchen/POWER1"
+    command_topic: "cmnd/kitchen/POWER1"
+    availability_topic: "tele/kitchen/LWT"
+    qos: 0
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
