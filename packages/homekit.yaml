@@ -7,6 +7,7 @@ homekit:
     include_domains:
       - cover
       - light
+      - switch
     exclude_entities:
       - light.lounge_lamp_1
       - light.lounge_lamp_2
