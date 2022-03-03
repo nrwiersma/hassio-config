@@ -25,8 +25,8 @@ binary_sensor:
     name: "Verandah Door"
     state_topic: "tele/rf/RESULT"
     value_template: "{{ value_json.RfReceived.Data }}"
-    payload_on: "90750A"
-    payload_off: "90750E"
+    payload_on: "96190A"
+    payload_off: "96190E"
     device_class: door
 
 # Garage Doors
