@@ -23,9 +23,6 @@ http:
   cors_allowed_origins:
     - "http://localhost:8080"
 
-# Updates
-updater:
-
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
