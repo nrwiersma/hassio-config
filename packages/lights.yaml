@@ -1,252 +1,232 @@
-# Lights
-light:
-  # Kitchen Switch
-  - platform: mqtt
-    name: "Night"
-    state_topic: "stat/kitchen/POWER1"
-    command_topic: "cmnd/kitchen/POWER1"
-    availability_topic: "tele/kitchen/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  - platform: mqtt
-    name: "Dining Room"
-    state_topic: "stat/kitchen/POWER2"
-    command_topic: "cmnd/kitchen/POWER2"
-    availability_topic: "tele/kitchen/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  - platform: mqtt
-    name: "Kitchen"
-    state_topic: "stat/kitchen/POWER3"
-    command_topic: "cmnd/kitchen/POWER3"
-    availability_topic: "tele/kitchen/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+mqtt:
+  # Lights
+  light:
+    # Kitchen Switch
+    - name: "Night"
+      state_topic: "stat/kitchen/POWER1"
+      command_topic: "cmnd/kitchen/POWER1"
+      availability_topic: "tele/kitchen/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    - name: "Dining Room"
+      state_topic: "stat/kitchen/POWER2"
+      command_topic: "cmnd/kitchen/POWER2"
+      availability_topic: "tele/kitchen/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    - name: "Kitchen"
+      state_topic: "stat/kitchen/POWER3"
+      command_topic: "cmnd/kitchen/POWER3"
+      availability_topic: "tele/kitchen/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Bar Switch
-  - platform: mqtt
-    name: "Bar"
-    state_topic: "stat/bar/POWER1"
-    command_topic: "cmnd/bar/POWER1"
-    availability_topic: "tele/bar/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  - platform: mqtt
-    name: "Verandah"
-    state_topic: "stat/bar/POWER2"
-    command_topic: "cmnd/bar/POWER2"
-    availability_topic: "tele/bar/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  # Bar Lamp
-  - platform: mqtt
-    name: "Bar Lamp"
-    state_topic: "stat/bar-lamp/POWER"
-    command_topic: "cmnd/bar-lamp/POWER"
-    availability_topic: "tele/bar-lamp/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  # Bar Lights
-  - platform: group
-    name: "Bar Lights"
-    entities:
-      - light.bar_lamp
-      - light.bar
+    # Bar Switch
+    - name: "Bar"
+      state_topic: "stat/bar/POWER1"
+      command_topic: "cmnd/bar/POWER1"
+      availability_topic: "tele/bar/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    - name: "Verandah"
+      state_topic: "stat/bar/POWER2"
+      command_topic: "cmnd/bar/POWER2"
+      availability_topic: "tele/bar/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    # Bar Lamp
+    - name: "Bar Lamp"
+      state_topic: "stat/bar-lamp/POWER"
+      command_topic: "cmnd/bar-lamp/POWER"
+      availability_topic: "tele/bar-lamp/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    # Bar Lights
+    - name: "Bar Lights"
+      entities:
+        - light.bar_lamp
+        - light.bar
 
-  # Lounge Switch
-  - platform: mqtt
-    name: "Lounge Main"
-    state_topic: "stat/lounge/POWER"
-    command_topic: "cmnd/lounge/POWER"
-    availability_topic: "tele/lounge/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  # Lounge Lamp 1
-  - platform: mqtt
-    name: "Lounge Lamp 1"
-    state_topic: "stat/lounge-lamp-1/POWER"
-    command_topic: "cmnd/lounge-lamp-1/POWER"
-    availability_topic: "tele/lounge-lamp-1/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  # Lounge Lamp 2
-  - platform: mqtt
-    name: "Lounge Lamp 2"
-    state_topic: "stat/lounge-lamp-2/POWER"
-    command_topic: "cmnd/lounge-lamp-2/POWER"
-    availability_topic: "tele/lounge-lamp-2/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  # Lounge Lamps
-  - platform: group
-    name: "Lounge Lamps"
-    entities:
-      - light.lounge_lamp_1
-      - light.lounge_lamp_2
+    # Lounge Switch
+    - name: "Lounge Main"
+      state_topic: "stat/lounge/POWER"
+      command_topic: "cmnd/lounge/POWER"
+      availability_topic: "tele/lounge/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    # Lounge Lamp 1
+    - name: "Lounge Lamp 1"
+      state_topic: "stat/lounge-lamp-1/POWER"
+      command_topic: "cmnd/lounge-lamp-1/POWER"
+      availability_topic: "tele/lounge-lamp-1/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    # Lounge Lamp 2
+    - name: "Lounge Lamp 2"
+      state_topic: "stat/lounge-lamp-2/POWER"
+      command_topic: "cmnd/lounge-lamp-2/POWER"
+      availability_topic: "tele/lounge-lamp-2/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    # Lounge Lamps
+    - name: "Lounge Lamps"
+      entities:
+        - light.lounge_lamp_1
+        - light.lounge_lamp_2
 
-  # Outside Switch
-  - platform: mqtt
-    name: "Outside"
-    state_topic: "stat/outside/POWER"
-    command_topic: "cmnd/outside/POWER"
-    availability_topic: "tele/outside/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Outside Switch
+    - name: "Outside"
+      state_topic: "stat/outside/POWER"
+      command_topic: "cmnd/outside/POWER"
+      availability_topic: "tele/outside/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Study Switch
-  - platform: mqtt
-    name: "Study"
-    state_topic: "stat/study/POWER"
-    command_topic: "cmnd/study/POWER"
-    availability_topic: "tele/study/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Study Switch
+    - name: "Study"
+      state_topic: "stat/study/POWER"
+      command_topic: "cmnd/study/POWER"
+      availability_topic: "tele/study/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Bedroom Switch
-  - platform: mqtt
-    name: "Bedroom"
-    state_topic: "stat/bedroom/POWER1"
-    command_topic: "cmnd/bedroom/POWER1"
-    availability_topic: "tele/bedroom/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-  - platform: mqtt
-    name: "Ensuite"
-    state_topic: "stat/bedroom/POWER2"
-    command_topic: "cmnd/bedroom/POWER2"
-    availability_topic: "tele/bedroom/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Bedroom Switch
+    - name: "Bedroom"
+      state_topic: "stat/bedroom/POWER1"
+      command_topic: "cmnd/bedroom/POWER1"
+      availability_topic: "tele/bedroom/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
+    - name: "Ensuite"
+      state_topic: "stat/bedroom/POWER2"
+      command_topic: "cmnd/bedroom/POWER2"
+      availability_topic: "tele/bedroom/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Entrace Switch
-  - platform: mqtt
-    name: "Entrance"
-    state_topic: "stat/entrance/POWER"
-    command_topic: "cmnd/entrance/POWER"
-    availability_topic: "tele/entrance/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Entrace Switch
+    - name: "Entrance"
+      state_topic: "stat/entrance/POWER"
+      command_topic: "cmnd/entrance/POWER"
+      availability_topic: "tele/entrance/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Hallway Switch
-  - platform: mqtt
-    name: "Hallway"
-    state_topic: "stat/hallway/POWER"
-    command_topic: "cmnd/hallway/POWER"
-    availability_topic: "tele/hallway/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Hallway Switch
+    - name: "Hallway"
+      state_topic: "stat/hallway/POWER"
+      command_topic: "cmnd/hallway/POWER"
+      availability_topic: "tele/hallway/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Breezeway Switch
-  - platform: mqtt
-    name: "Breezeway"
-    state_topic: "stat/breezeway/POWER"
-    command_topic: "cmnd/breezeway/POWER"
-    availability_topic: "tele/breezeway/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Breezeway Switch
+    - name: "Breezeway"
+      state_topic: "stat/breezeway/POWER"
+      command_topic: "cmnd/breezeway/POWER"
+      availability_topic: "tele/breezeway/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Bathroom Switch
-  - platform: mqtt
-    name: "Bathroom"
-    state_topic: "stat/bathroom/POWER"
-    command_topic: "cmnd/bathroom/POWER"
-    availability_topic: "tele/bathroom/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Bathroom Switch
+    - name: "Bathroom"
+      state_topic: "stat/bathroom/POWER"
+      command_topic: "cmnd/bathroom/POWER"
+      availability_topic: "tele/bathroom/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Toilet Switch
-  - platform: mqtt
-    name: "Toilet"
-    state_topic: "stat/toilet/POWER"
-    command_topic: "cmnd/toilet/POWER"
-    availability_topic: "tele/toilet/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Toilet Switch
+    - name: "Toilet"
+      state_topic: "stat/toilet/POWER"
+      command_topic: "cmnd/toilet/POWER"
+      availability_topic: "tele/toilet/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
-  # Driveway Switch
-  - platform: mqtt
-    name: "Driveway"
-    state_topic: "stat/driveway/POWER"
-    command_topic: "cmnd/driveway/POWER"
-    availability_topic: "tele/driveway/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+    # Driveway Switch
+    - name: "Driveway"
+      state_topic: "stat/driveway/POWER"
+      command_topic: "cmnd/driveway/POWER"
+      availability_topic: "tele/driveway/LWT"
+      qos: 1
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
 
 # Automation ===============================
 

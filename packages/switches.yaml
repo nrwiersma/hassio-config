@@ -1,15 +1,15 @@
-# Lights
-switch:
-  - platform: mqtt
-    name: "Garage Geyser"
-    device_class: "switch"
-    icon: "mdi:water-boiler"
-    state_topic: "stat/garage-geyser/POWER"
-    command_topic: "cmnd/garage-geyser/POWER"
-    availability_topic: "tele/garage-geyser/LWT"
-    qos: 0
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
+mqtt:
+  # Switches
+  switch:
+    - name: "Garage Geyser"
+      device_class: "switch"
+      icon: "mdi:water-boiler"
+      state_topic: "stat/garage-geyser/POWER"
+      command_topic: "cmnd/garage-geyser/POWER"
+      availability_topic: "tele/garage-geyser/LWT"
+      qos: 0
+      payload_on: "ON"
+      payload_off: "OFF"
+      payload_available: "Online"
+      payload_not_available: "Offline"
+      retain: false
