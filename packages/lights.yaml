@@ -65,11 +65,6 @@ mqtt:
       payload_available: "Online"
       payload_not_available: "Offline"
       retain: false
-    # Bar Lights
-    - name: "Bar Lights"
-      entities:
-        - light.bar_lamp
-        - light.bar
 
     # Lounge Switch
     - name: "Lounge Main"
@@ -104,11 +99,6 @@ mqtt:
       payload_available: "Online"
       payload_not_available: "Offline"
       retain: false
-    # Lounge Lamps
-    - name: "Lounge Lamps"
-      entities:
-        - light.lounge_lamp_1
-        - light.lounge_lamp_2
 
     # Outside Switch
     - name: "Outside"
@@ -227,6 +217,22 @@ mqtt:
       payload_available: "Online"
       payload_not_available: "Offline"
       retain: false
+
+# Groups ===================================
+
+light:
+  # Bar Lights
+  - platform: group
+    name: "Bar Lights"
+    entities:
+      - light.bar_lamp
+      - light.bar
+  # Lounge Lamps
+  - platform: group
+    name: "Lounge Lamps"
+    entities:
+      - light.lounge_lamp_1
+      - light.lounge_lamp_2
 
 # Automation ===============================
 
