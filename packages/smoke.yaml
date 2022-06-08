@@ -1,12 +1,12 @@
-# Smoke Detector
-binary_sensor:
-  - platform: mqtt
-    name: "Smoke Detector"
-    state_topic: "tele/rf/RESULT"
-    value_template: "{{ value_json.RfReceived.Data }}"
-    payload_on: "A63166"
-    off_delay: 1800
-    device_class: smoke
+mqtt:
+  # Smoke Detector
+  binary_sensor:
+    - name: "Smoke Detector"
+      state_topic: "tele/rf/RESULT"
+      value_template: "{{ value_json.RfReceived.Data }}"
+      payload_on: "A63166"
+      off_delay: 1800
+      device_class: smoke
 
 # Automation ===============================
 

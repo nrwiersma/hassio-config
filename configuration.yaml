@@ -8,6 +8,9 @@ homeassistant:
   customize: !include customize.yaml
   packages: !include_dir_named packages
 
+# Enabled all default things
+default_config:
+
 # Enables the frontend
 frontend:
 
@@ -54,26 +57,6 @@ cloud:
 
 # System health
 system_health:
-
-# MQTT
-mqtt:
-  broker: localhost
-  port: 1883
-  client_id: home-assistant
-  username: !secret mqtt_username
-  password: !secret mqtt_password
-  keepalive: 60
-  protocol: 3.1
-  birth_message:
-    topic: "tele/hass/LWT"
-    payload: "Online"
-    qos: 1
-    retain: true
-  will_message:
-    topic: "tele/hass/LWT"
-    payload: "Offline"
-    qos: 1
-    retain: true
 
 # Includes =================================
 
