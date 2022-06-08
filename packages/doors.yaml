@@ -28,8 +28,7 @@ mqtt:
 
   # Garage Doors
   cover:
-    - platform: mqtt
-      name: "Garage Door Left"
+    - name: "Garage Door Left"
       state_topic: "cmnd/garage_left_sensor/POWER2"
       command_topic: "cmnd/garage_left/POWER"
       availability_topic: "tele/garage_left/LWT"
@@ -43,8 +42,7 @@ mqtt:
       optimistic: false
       retain: false
       device_class: garage
-    - platform: mqtt
-      name: "Garage Door Right"
+    - name: "Garage Door Right"
       state_topic: "cmnd/garage_right_sensor/POWER2"
       command_topic: "cmnd/garage_right/POWER"
       availability_topic: "tele/garage_right/LWT"
