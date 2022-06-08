@@ -5,6 +5,8 @@ homeassistant:
   elevation: !secret home_elevation
   unit_system: metric
   time_zone: Africa/Johannesburg
+  currency: ZAR
+  internal_url: "http://hassio.wiersma.iot:8123"
   customize: !include customize.yaml
   packages: !include_dir_named packages
 
