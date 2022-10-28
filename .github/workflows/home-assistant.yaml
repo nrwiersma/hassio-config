@@ -1,30 +1,20 @@
 ---
 name: Home Assistant CI
 
-# yamllint disable-line rule:truthy
 on:
   push:
   pull_request:
 
 jobs:
-#  yamllint:
-#    name: 🧹 yamllint
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: ⤵️ Check out configuration from GitHub
-#        uses: actions/checkout@v2.4.0
-#      - name: 🚀 Run yamllint
-#        uses: frenck/action-yamllint@v1.1.1
-
   home-assistant:
     name: "Home Assistant Core Configuration Check"
-#    needs: [yamllint]
     runs-on: ubuntu-latest
     steps:
       - name: ⤵️ Check out configuration from GitHub
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
+
       - name: 🚀 Run Home Assistant Configuration Check
-        uses: frenck/action-home-assistant@v1.1.1
+        uses: frenck/action-home-assistant@v1
         with:
           path: "./"
           secrets: ./.stubs/secrets.yaml
