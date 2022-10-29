@@ -1,0 +1,175 @@
+title: Home
+views:
+  - theme: Mushroom
+    path: default_view
+    title: Home
+    badges: []
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: binary_sensor.smoke_detector
+            icon_color: red
+            content_info: none
+          - type: entity
+            entity: switch.garage_geyser
+            icon_color: amber
+            content_info: none
+            use_entity_picture: false
+            name: Geyser
+          - type: weather
+            entity: weather.openweathermap
+            show_conditions: true
+            show_temperature: true
+          - type: entity
+            entity: sensor.mains_wh
+            icon_color: amber
+        alignment: center
+      - square: false
+        columns: 4
+        type: grid
+        cards:
+          - type: custom:mushroom-light-card
+            entity: light.bar_lights
+            fill_container: false
+            collapsible_controls: false
+            layout: vertical
+            secondary_info: none
+            use_light_color: false
+            show_brightness_control: false
+            show_color_control: false
+            show_color_temp_control: false
+          - type: custom:mushroom-light-card
+            entity: light.bathroom
+            layout: vertical
+            secondary_info: none
+          - type: custom:mushroom-light-card
+            entity: light.bedroom
+            layout: vertical
+            secondary_info: none
+          - type: custom:mushroom-light-card
+            entity: light.breezeway
+            layout: vertical
+            secondary_info: none
+          - type: custom:mushroom-light-card
+            entity: light.dining_room
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.ensuite
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.entrance
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.hallway
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.kitchen
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.lounge_lamps
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.lounge_main
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.night
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.study
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            entity: light.toilet
+            secondary_info: none
+            layout: vertical
+          - type: custom:mushroom-light-card
+            layout: vertical
+            primary_info: none
+            secondary_info: none
+          - type: custom:mushroom-light-card
+            primary_info: none
+            secondary_info: none
+          - type: custom:mushroom-light-card
+            entity: light.driveway
+            layout: vertical
+            secondary_info: none
+          - type: custom:mushroom-light-card
+            entity: light.outside
+            layout: vertical
+            secondary_info: none
+          - type: custom:mushroom-light-card
+            entity: light.verandah
+            layout: vertical
+            secondary_info: none
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: person.nick
+            icon_color: blue
+            content_info: name
+          - type: entity
+            entity: person.monika
+            icon_color: blue
+            content_info: name
+            use_entity_picture: false
+        alignment: center
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.front_door
+            layout: vertical
+            name: Front
+            secondary_info: none
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.kitchen_door
+            layout: vertical
+            name: Kitchen
+            secondary_info: none
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.outside_door
+            layout: vertical
+            name: Breezeway
+            secondary_info: none
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.verandah_door
+            name: Verandah
+            layout: vertical
+            secondary_info: none
+      - type: horizontal-stack
+        cards:
+          - type: custom:mushroom-cover-card
+            entity: cover.garage_door_left
+            show_buttons_control: true
+            primary_info: none
+            secondary_info: none
+            layout: horizontal
+          - type: custom:mushroom-cover-card
+            entity: cover.garage_door_right
+            name: ' '
+            show_buttons_control: true
+            secondary_info: none
+            primary_info: none
+            layout: horizontal
+      - type: horizontal-stack
+        cards:
+          - show_state: false
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: camera.driveway
+            camera_image: camera.driveway
+          - show_state: false
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: camera.garden
+            camera_image: camera.garden
