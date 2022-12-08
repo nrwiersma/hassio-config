@@ -6,6 +6,7 @@ homeassistant:
   unit_system: metric
   time_zone: Africa/Johannesburg
   currency: ZAR
+  country: ZA
   internal_url: "http://hassio.wiersma.iot:8123"
   customize: !include customize.yaml
   packages: !include_dir_named packages
