@@ -159,7 +159,7 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
 
-    # Entrace Switch
+    # Entrance Switch
     - unique_id: "mqtt.light.entrance"
       name: "Entrance"
       state_topic: "stat/entrance/POWER"

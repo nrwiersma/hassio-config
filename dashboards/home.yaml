@@ -107,7 +107,7 @@ views:
             layout: vertical
             secondary_info: none
           - type: custom:mushroom-light-card
-            entity: light.verandah
+            entity: light.veranda
             layout: vertical
             secondary_info: none
       - type: custom:mushroom-chips-card
@@ -140,8 +140,8 @@ views:
             name: Breezeway
             secondary_info: none
           - type: custom:mushroom-entity-card
-            entity: binary_sensor.verandah_door
-            name: Verandah
+            entity: binary_sensor.veranda_door
+            name: Veranda
             layout: vertical
             secondary_info: none
       - type: horizontal-stack
