@@ -2,7 +2,8 @@ mqtt:
   # Lights
   light:
     # Kitchen Switch
-    - name: "Night"
+    - unique_id: "mqtt.light.night"
+      name: "Night"
       state_topic: "stat/kitchen/POWER1"
       command_topic: "cmnd/kitchen/POWER1"
       availability_topic: "tele/kitchen/LWT"
@@ -12,7 +13,8 @@ mqtt:
       payload_available: "Online"
       payload_not_available: "Offline"
       retain: false
-    - name: "Dining Room"
+    - unique_id: "mqtt.light.dining-room"
+      name: "Dining Room"
       state_topic: "stat/kitchen/POWER2"
       command_topic: "cmnd/kitchen/POWER2"
       availability_topic: "tele/kitchen/LWT"
@@ -22,7 +24,8 @@ mqtt:
       payload_available: "Online"
       payload_not_available: "Offline"
       retain: false
-    - name: "Kitchen"
+    - unique_id: "mqtt.light.kitchen"
+      name: "Kitchen"
       state_topic: "stat/kitchen/POWER3"
       command_topic: "cmnd/kitchen/POWER3"
       availability_topic: "tele/kitchen/LWT"
@@ -34,7 +37,8 @@ mqtt:
       retain: false
 
     # Bar Switch
-    - name: "Bar"
+    - unique_id: "mqtt.light.bar"
+      name: "Bar"
       state_topic: "stat/bar/POWER1"
       command_topic: "cmnd/bar/POWER1"
       availability_topic: "tele/bar/LWT"
@@ -44,7 +48,8 @@ mqtt:
       payload_available: "Online"
       payload_not_available: "Offline"
       retain: false
-    - name: "Verandah"
+    - unique_id: "mqtt.light.veranda"
+      name: "Veranda"
       state_topic: "stat/bar/POWER2"
       command_topic: "cmnd/bar/POWER2"
       availability_topic: "tele/bar/LWT"
@@ -55,7 +60,8 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
     # Bar Lamp
-    - name: "Bar Lamp"
+    - unique_id: "mqtt.light.bar-lamp"
+      name: "Bar Lamp"
       state_topic: "stat/bar-lamp/POWER"
       command_topic: "cmnd/bar-lamp/POWER"
       availability_topic: "tele/bar-lamp/LWT"
@@ -67,7 +73,8 @@ mqtt:
       retain: false
 
     # Lounge Switch
-    - name: "Lounge Main"
+    - unique_id: "mqtt.light.lounge-main"
+      name: "Lounge Main"
       state_topic: "stat/lounge/POWER"
       command_topic: "cmnd/lounge/POWER"
       availability_topic: "tele/lounge/LWT"
@@ -78,7 +85,8 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
     # Lounge Lamp 1
-    - name: "Lounge Lamp 1"
+    - unique_id: "mqtt.light.lounge-lamp-1"
+      name: "Lounge Lamp 1"
       state_topic: "stat/lounge-lamp-1/POWER"
       command_topic: "cmnd/lounge-lamp-1/POWER"
       availability_topic: "tele/lounge-lamp-1/LWT"
@@ -89,7 +97,8 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
     # Lounge Lamp 2
-    - name: "Lounge Lamp 2"
+    - unique_id: "mqtt.light.lounge-lamp-2"
+      name: "Lounge Lamp 2"
       state_topic: "stat/lounge-lamp-2/POWER"
       command_topic: "cmnd/lounge-lamp-2/POWER"
       availability_topic: "tele/lounge-lamp-2/LWT"
@@ -101,7 +110,8 @@ mqtt:
       retain: false
 
     # Outside Switch
-    - name: "Outside"
+    - unique_id: "mqtt.light.outside"
+      name: "Outside"
       state_topic: "stat/outside/POWER"
       command_topic: "cmnd/outside/POWER"
       availability_topic: "tele/outside/LWT"
@@ -113,7 +123,8 @@ mqtt:
       retain: false
 
     # Study Switch
-    - name: "Study"
+    - unique_id: "mqtt.light.study"
+      name: "Study"
       state_topic: "stat/study/POWER"
       command_topic: "cmnd/study/POWER"
       availability_topic: "tele/study/LWT"
@@ -125,7 +136,8 @@ mqtt:
       retain: false
 
     # Bedroom Switch
-    - name: "Bedroom"
+    - unique_id: "mqtt.light.bedroom"
+      name: "Bedroom"
       state_topic: "stat/bedroom/POWER1"
       command_topic: "cmnd/bedroom/POWER1"
       availability_topic: "tele/bedroom/LWT"
@@ -135,7 +147,8 @@ mqtt:
       payload_available: "Online"
       payload_not_available: "Offline"
       retain: false
-    - name: "Ensuite"
+    - unique_id: "mqtt.light.ensuite"
+      name: "Ensuite"
       state_topic: "stat/bedroom/POWER2"
       command_topic: "cmnd/bedroom/POWER2"
       availability_topic: "tele/bedroom/LWT"
@@ -147,7 +160,8 @@ mqtt:
       retain: false
 
     # Entrace Switch
-    - name: "Entrance"
+    - unique_id: "mqtt.light.entrance"
+      name: "Entrance"
       state_topic: "stat/entrance/POWER"
       command_topic: "cmnd/entrance/POWER"
       availability_topic: "tele/entrance/LWT"
@@ -159,7 +173,8 @@ mqtt:
       retain: false
 
     # Hallway Switch
-    - name: "Hallway"
+    - unique_id: "mqtt.light.hallway"
+      name: "Hallway"
       state_topic: "stat/hallway/POWER"
       command_topic: "cmnd/hallway/POWER"
       availability_topic: "tele/hallway/LWT"
@@ -171,7 +186,8 @@ mqtt:
       retain: false
 
     # Breezeway Switch
-    - name: "Breezeway"
+    - unique_id: "mqtt.light.breezeway"
+      name: "Breezeway"
       state_topic: "stat/breezeway/POWER"
       command_topic: "cmnd/breezeway/POWER"
       availability_topic: "tele/breezeway/LWT"
@@ -183,7 +199,8 @@ mqtt:
       retain: false
 
     # Bathroom Switch
-    - name: "Bathroom"
+    - unique_id: "mqtt.light.bathroom"
+      name: "Bathroom"
       state_topic: "stat/bathroom/POWER"
       command_topic: "cmnd/bathroom/POWER"
       availability_topic: "tele/bathroom/LWT"
@@ -195,7 +212,8 @@ mqtt:
       retain: false
 
     # Toilet Switch
-    - name: "Toilet"
+    - unique_id: "mqtt.light.toilet"
+      name: "Toilet"
       state_topic: "stat/toilet/POWER"
       command_topic: "cmnd/toilet/POWER"
       availability_topic: "tele/toilet/LWT"
@@ -207,7 +225,8 @@ mqtt:
       retain: false
 
     # Driveway Switch
-    - name: "Driveway"
+    - unique_id: "mqtt.light.driveway"
+      name: "Driveway"
       state_topic: "stat/driveway/POWER"
       command_topic: "cmnd/driveway/POWER"
       availability_topic: "tele/driveway/LWT"
@@ -223,12 +242,14 @@ mqtt:
 light:
   # Bar Lights
   - platform: group
+    unique_id: "group.light.bar"
     name: "Bar Lights"
     entities:
       - light.bar_lamp
       - light.bar
   # Lounge Lamps
   - platform: group
+    unique_id: "mqtt.light.lounge-lamps"
     name: "Lounge Lamps"
     entities:
       - light.lounge_lamp_1
