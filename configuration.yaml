@@ -79,7 +79,7 @@ system_health:
 
 # ZHA Configuration
 zha:
-  custom_quirks_path: /config/zha_quirks/
+  custom_quirks_path: !env_var ZHA_QUIRKS_PATH /config/zha_quirks/
 
 # Includes =================================
 

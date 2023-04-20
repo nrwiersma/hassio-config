@@ -15,7 +15,9 @@ jobs:
 
       - name: 🚀 Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1
+        env:
+          ZHA_QUIRKS_PATH: ./zha_quirks/
         with:
-          path: "./config"
+          path: ./
           secrets: ./.stubs/secrets.yaml
-          version: "stable"
+          version: stable
