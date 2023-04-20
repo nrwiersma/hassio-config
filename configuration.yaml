@@ -77,6 +77,10 @@ cloud:
 # System health
 system_health:
 
+# ZHA Configuration
+zha:
+  custom_quirks_path: /config/zha_quirks/
+
 # Includes =================================
 
 group: !include groups.yaml
