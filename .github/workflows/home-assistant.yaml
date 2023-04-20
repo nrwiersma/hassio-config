@@ -16,6 +16,7 @@ jobs:
       - name: 🚀 Run Home Assistant Configuration Check
         uses: frenck/action-home-assistant@v1
         with:
-          path: "./"
+          path: ./
+          env_file: ./.stubs/env
           secrets: ./.stubs/secrets.yaml
-          version: "stable"
+          version: stable
