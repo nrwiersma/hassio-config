@@ -122,19 +122,6 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
 
-    # Study Switch
-    - unique_id: "mqtt.light.study"
-      name: "Study"
-      state_topic: "stat/study/POWER"
-      command_topic: "cmnd/study/POWER"
-      availability_topic: "tele/study/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-
     # Bedroom Switch
     - unique_id: "mqtt.light.bedroom"
       name: "Bedroom"

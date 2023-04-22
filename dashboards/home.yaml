@@ -84,7 +84,7 @@ views:
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
-            entity: light.study
+            entity: switch.study_right
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
