@@ -83,6 +83,7 @@ zha:
 
 # Includes =================================
 
+automation: !include automations.yaml
 group: !include groups.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
