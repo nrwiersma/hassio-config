@@ -1,114 +1,6 @@
 mqtt:
   # Lights
   light:
-    # Kitchen Switch
-    - unique_id: "mqtt.light.night"
-      name: "Night"
-      state_topic: "stat/kitchen/POWER1"
-      command_topic: "cmnd/kitchen/POWER1"
-      availability_topic: "tele/kitchen/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-    - unique_id: "mqtt.light.dining-room"
-      name: "Dining Room"
-      state_topic: "stat/kitchen/POWER2"
-      command_topic: "cmnd/kitchen/POWER2"
-      availability_topic: "tele/kitchen/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-    - unique_id: "mqtt.light.kitchen"
-      name: "Kitchen"
-      state_topic: "stat/kitchen/POWER3"
-      command_topic: "cmnd/kitchen/POWER3"
-      availability_topic: "tele/kitchen/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-
-    # Bar Switch
-    - unique_id: "mqtt.light.bar"
-      name: "Bar"
-      state_topic: "stat/bar/POWER1"
-      command_topic: "cmnd/bar/POWER1"
-      availability_topic: "tele/bar/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-    - unique_id: "mqtt.light.veranda"
-      name: "Veranda"
-      state_topic: "stat/bar/POWER2"
-      command_topic: "cmnd/bar/POWER2"
-      availability_topic: "tele/bar/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-    # Bar Lamp
-    - unique_id: "mqtt.light.bar-lamp"
-      name: "Bar Lamp"
-      state_topic: "stat/bar-lamp/POWER"
-      command_topic: "cmnd/bar-lamp/POWER"
-      availability_topic: "tele/bar-lamp/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-
-    # Lounge Switch
-    - unique_id: "mqtt.light.lounge-main"
-      name: "Lounge Main"
-      state_topic: "stat/lounge/POWER"
-      command_topic: "cmnd/lounge/POWER"
-      availability_topic: "tele/lounge/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-    # Lounge Lamp 1
-    - unique_id: "mqtt.light.lounge-lamp-1"
-      name: "Lounge Lamp 1"
-      state_topic: "stat/lounge-lamp-1/POWER"
-      command_topic: "cmnd/lounge-lamp-1/POWER"
-      availability_topic: "tele/lounge-lamp-1/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-    # Lounge Lamp 2
-    - unique_id: "mqtt.light.lounge-lamp-2"
-      name: "Lounge Lamp 2"
-      state_topic: "stat/lounge-lamp-2/POWER"
-      command_topic: "cmnd/lounge-lamp-2/POWER"
-      availability_topic: "tele/lounge-lamp-2/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-
     # Outside Switch
     - unique_id: "mqtt.light.outside"
       name: "Outside"
@@ -122,29 +14,6 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
 
-    # Bedroom Switch
-    - unique_id: "mqtt.light.bedroom"
-      name: "Bedroom"
-      state_topic: "stat/bedroom/POWER1"
-      command_topic: "cmnd/bedroom/POWER1"
-      availability_topic: "tele/bedroom/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-    - unique_id: "mqtt.light.ensuite"
-      name: "Ensuite"
-      state_topic: "stat/bedroom/POWER2"
-      command_topic: "cmnd/bedroom/POWER2"
-      availability_topic: "tele/bedroom/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
 
     # Entrance Switch
     - unique_id: "mqtt.light.entrance"
@@ -224,24 +93,6 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
 
-# Groups ===================================
-
-light:
-  # Bar Lights
-  - platform: group
-    unique_id: "group.light.bar"
-    name: "Bar Lights"
-    entities:
-      - light.bar_lamp
-      - light.bar
-  # Lounge Lamps
-  - platform: group
-    unique_id: "mqtt.light.lounge-lamps"
-    name: "Lounge Lamps"
-    entities:
-      - light.lounge_lamp_1
-      - light.lounge_lamp_2
-
 # Automation ===============================
 
 automation:
@@ -255,22 +106,6 @@ automation:
       data:
         topic: cmnd/tasmotas/POWER0
         payload: ''
-  - alias: Lounge Lamps Toggle
-    trigger:
-        platform: mqtt
-        topic: "cmnd/lounge-lamps/POWER"
-        payload: 'TOGGLE'
-    action:
-        service: light.toggle
-        entity_id: light.lounge_lamps
-  - alias: Bar Lamps Toggle
-    trigger:
-        platform: mqtt
-        topic: "cmnd/bar-lamps/POWER"
-        payload: 'TOGGLE'
-    action:
-        service: light.toggle
-        entity_id: light.bar_lights
 
   - alias: Arrival Mode
     trigger:

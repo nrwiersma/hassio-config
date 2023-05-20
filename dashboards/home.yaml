@@ -44,7 +44,7 @@ views:
             layout: vertical
             secondary_info: none
           - type: custom:mushroom-light-card
-            entity: light.bedroom
+            entity: switch.bedroom_right
             layout: vertical
             secondary_info: none
           - type: custom:mushroom-light-card
@@ -52,11 +52,11 @@ views:
             layout: vertical
             secondary_info: none
           - type: custom:mushroom-light-card
-            entity: light.dining_room
+            entity: switch.kitchen_left
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
-            entity: light.ensuite
+            entity: switch.bedroom_left
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
@@ -68,19 +68,15 @@ views:
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
-            entity: light.kitchen
+            entity: switch.kitchen_right
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
-            entity: light.lounge_lamps
+            entity: switch.lounge_lamps
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
-            entity: light.lounge_main
-            secondary_info: none
-            layout: vertical
-          - type: custom:mushroom-light-card
-            entity: light.night
+            entity: switch.lounge_left
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
@@ -99,6 +95,9 @@ views:
             primary_info: none
             secondary_info: none
           - type: custom:mushroom-light-card
+            primary_info: none
+            secondary_info: none
+          - type: custom:mushroom-light-card
             entity: light.driveway
             layout: vertical
             secondary_info: none
@@ -107,7 +106,7 @@ views:
             layout: vertical
             secondary_info: none
           - type: custom:mushroom-light-card
-            entity: light.veranda
+            entity: switch.bar_left
             layout: vertical
             secondary_info: none
       - type: custom:mushroom-chips-card

@@ -1,0 +1,54 @@
+- alias: Lounge Lamps Toggle
+  description: ""
+  trigger:
+    - platform: device
+      type: changed_states
+      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+      entity_id: switch.lounge_right
+      domain: switch
+  condition: [ ]
+  action:
+    - if:
+        - condition: device
+          type: is_on
+          device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+          entity_id: switch.lounge_right
+          domain: switch
+      then:
+        - type: turn_on
+          device_id: b1693b2ba9a4922be1436d2bd15955c1
+          entity_id: switch.lounge_lamps
+          domain: switch
+      else:
+        - type: turn_off
+          device_id: b1693b2ba9a4922be1436d2bd15955c1
+          entity_id: switch.lounge_lamps
+          domain: switch
+  mode: single
+- alias: Bar Lamp Toggle
+  description: ""
+  trigger:
+    - platform: device
+      type: changed_states
+      device_id: 818dbeec056a1a0d674a1d926ece4097
+      entity_id: switch.bar_right
+      domain: switch
+  condition: [ ]
+  action:
+    - if:
+        - condition: device
+          type: is_on
+          device_id: 818dbeec056a1a0d674a1d926ece4097
+          entity_id: switch.bar_right
+          domain: switch
+      then:
+        - type: turn_on
+          device_id: 81474ad63b66ef687d4682a708cc6c00
+          entity_id: switch.bar_lamp
+          domain: switch
+      else:
+        - type: turn_off
+          device_id: 81474ad63b66ef687d4682a708cc6c00
+          entity_id: switch.bar_lamp
+          domain: switch
+  mode: single
