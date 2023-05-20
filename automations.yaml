@@ -25,6 +25,35 @@
           entity_id: switch.lounge_lamps
           domain: switch
   mode: single
+- alias: Lounge Lamps Sync
+  description: ""
+  trigger:
+    - platform: device
+      type: changed_states
+      device_id: b1693b2ba9a4922be1436d2bd15955c1
+      entity_id: switch.lounge_lamps
+      domain: switch
+  condition:
+    - condition: template
+      value_template: "{{ states(\"switch.lounge_lamps\") != states(\"switch.lounge_right\") }}"
+  action:
+    - if:
+        - condition: device
+          type: is_on
+          device_id: b1693b2ba9a4922be1436d2bd15955c1
+          entity_id: switch.lounge_lamps
+          domain: switch
+      then:
+        - type: turn_on
+          device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+          entity_id: switch.lounge_right
+          domain: switch
+      else:
+        - type: turn_off
+          device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+          entity_id: switch.lounge_right
+          domain: switch
+  mode: single
 - alias: Bar Lamp Toggle
   description: ""
   trigger:
