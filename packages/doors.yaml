@@ -1,31 +1,4 @@
 mqtt:
-  # Doors
-  binary_sensor:
-    - name: "Outside Door"
-      state_topic: "tele/rf/RESULT"
-      value_template: "{{ value_json.RfReceived.Data }}"
-      payload_on: "94A50A"
-      payload_off: "94A50E"
-      device_class: door
-    - name: "Front Door"
-      state_topic: "tele/rf/RESULT"
-      value_template: "{{ value_json.RfReceived.Data }}"
-      payload_on: "92550A"
-      payload_off: "92550E"
-      device_class: door
-    - name: "Kitchen Door"
-      state_topic: "tele/rf/RESULT"
-      value_template: "{{ value_json.RfReceived.Data }}"
-      payload_on: "941B0A"
-      payload_off: "941B0E"
-      device_class: door
-    - name: "Veranda Door"
-      state_topic: "tele/rf/RESULT"
-      value_template: "{{ value_json.RfReceived.Data }}"
-      payload_on: "96190A"
-      payload_off: "96190E"
-      device_class: door
-
   # Garage Doors
   cover:
     - name: "Garage Door Left"
