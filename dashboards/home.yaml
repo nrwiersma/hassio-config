@@ -118,22 +118,22 @@ views:
       - type: horizontal-stack
         cards:
           - type: custom:mushroom-entity-card
-            entity: binary_sensor.front_door
+            entity: binary_sensor.front_door_contact
             layout: vertical
             name: Front
             secondary_info: none
           - type: custom:mushroom-entity-card
-            entity: binary_sensor.kitchen_door
+            entity: binary_sensor.kitchen_door_contact
             layout: vertical
             name: Kitchen
             secondary_info: none
           - type: custom:mushroom-entity-card
-            entity: binary_sensor.outside_door
+            entity: binary_sensor.back_door_contact
             layout: vertical
             name: Breezeway
             secondary_info: none
           - type: custom:mushroom-entity-card
-            entity: binary_sensor.veranda_door
+            entity: binary_sensor.veranda_door_contact
             name: Veranda
             layout: vertical
             secondary_info: none
