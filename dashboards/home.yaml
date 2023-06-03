@@ -82,12 +82,13 @@ views:
             secondary_info: none
             layout: vertical
           - type: custom:mushroom-light-card
-            layout: vertical
             primary_info: switch.scullery_left
             secondary_info: none
+            layout: vertical
           - type: custom:mushroom-light-card
             primary_info: switch.scullery_right
             secondary_info: none
+            layout: vertical
           - type: custom:mushroom-light-card
             primary_info: none
             secondary_info: none
