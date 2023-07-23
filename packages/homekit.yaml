@@ -1,15 +1,18 @@
 # Homekit
 homekit:
   filter:
-    include_entities:
-      - input_boolean.nick_present
-      - input_boolean.monika_present
-      - switch.garage_geyser
     include_domains:
       - cover
       - light
+      - switch
+    exclude_entity_globs:
+      - switch.*_flip_indicator_light
+      - switch.*_led_disabled_night
+      - switch.*_power_outage_memory
+      # Cameras
+      - switch.cottage_*
+      - switch.garden_*
     exclude_entities:
-      - light.lounge_lamp_1
-      - light.lounge_lamp_2
-      - light.bar
-      - light.bar_lamp
+      - switch.lounge_lamp_left
+      - switch.lounge_lamp_right
+      - switch.bar_lamp
