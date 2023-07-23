@@ -8,10 +8,6 @@ views:
       - type: custom:mushroom-chips-card
         chips:
           - type: entity
-            entity: binary_sensor.smoke_detector
-            icon_color: red
-            content_info: none
-          - type: entity
             entity: switch.garage_geyser
             icon_color: amber
             content_info: none
