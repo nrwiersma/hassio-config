@@ -7,12 +7,6 @@ views:
     cards:
       - type: custom:mushroom-chips-card
         chips:
-          - type: entity
-            entity: switch.garage_geyser
-            icon_color: amber
-            content_info: none
-            use_entity_picture: false
-            name: Geyser
           - type: weather
             entity: weather.openweathermap
             show_conditions: true
