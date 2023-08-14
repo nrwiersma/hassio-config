@@ -1,0 +1,16 @@
+---
+sensor:
+  - platform: influxdb
+    api_version: 2
+    organization: 2912765fac33d7d4
+    token: !secret influxdb_api_key
+    queries_flux:
+      - name: "Mean humidity reported from past day"
+        unique_id: "iotawatt-plugs1-wh"
+        range_start: "{{ (now().replace(hour=0, minute=0, second=0, microsecond=0)) }}"
+        bucket: iotawatt
+        query: >
+            |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+            |> filter(fn: (r) => r["_measurement"] == "plugs1.wh")
+            |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)
+            |> cumulativeSum()

@@ -77,9 +77,18 @@ cloud:
 # System health
 system_health:
 
-# ZHA Configuration
-zha:
-  custom_quirks_path: !env_var ZHA_QUIRKS_PATH /config/zha_quirks/
+# InfluxDB
+influxdb:
+  api_version: 2
+  ssl: true
+  host: influx.wiersma.lan
+  port: 443
+  token: !secret influxdb_api_key
+  organization: 2912765fac33d7d4
+  bucket: iotawatt
+  exclude:
+    entity_globs: "*"
+
 
 # Includes =================================
 
