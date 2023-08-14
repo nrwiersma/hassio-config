@@ -77,19 +77,6 @@ cloud:
 # System health
 system_health:
 
-# InfluxDB
-influxdb:
-  api_version: 2
-  ssl: true
-  verify_ssl: false
-  host: influx.wiersma.lan
-  port: 443
-  token: !secret influxdb_api_key
-  organization: 2912765fac33d7d4
-  bucket: iotawatt
-  exclude:
-    entity_globs: "*"
-
 
 # Includes =================================
 
