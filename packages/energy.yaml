@@ -24,6 +24,69 @@ sensor:
           filter(fn: (r) => r["_measurement"] == "plugs2.wh")
           |> cumulativeSum()
         group_function: last
+      - name: "plugs3_wh"
+        unique_id: "iotawatt_plugs3_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "plugs3.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "plugs4_wh"
+        unique_id: "iotawatt_plugs4_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "plugs4.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "lights1_wh"
+        unique_id: "iotawatt_lights1_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "lights1.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "lights2_wh"
+        unique_id: "iotawatt_lights2_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "lights2.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "pool_wh"
+        unique_id: "iotawatt_pool_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "pool.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "stove_wh"
+        unique_id: "iotawatt_stove_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "stove.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "garage_wh"
+        unique_id: "iotawatt_garage_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "garage.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "geyser_wh"
+        unique_id: "iotawatt_geyser_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "geyser.wh")
+          |> cumulativeSum()
+        group_function: last
+      - name: "mains_wh"
+        unique_id: "iotawatt_mains_wh"
+        range_start: "today()"
+        query: >
+          filter(fn: (r) => r["_measurement"] == "mains.wh")
+          |> cumulativeSum()
+        group_function: last
 
 homeassistant:
   customize_glob:
