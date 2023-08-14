@@ -81,6 +81,7 @@ system_health:
 influxdb:
   api_version: 2
   ssl: true
+  verify_ssl: false
   host: influx.wiersma.lan
   port: 443
   token: !secret influxdb_api_key
