@@ -17,7 +17,7 @@ views:
           - type: template
             entity: sensor.geyser_temp_temperature
             icon_color: >-
-              {{ 'accent' if states('binary_sensor.geyser_power') == 'on' else 'primary'
+              {{ 'amber' if states('binary_sensor.geyser_power') == 'on' else 'primary'
               }}
             double_tap_action:
               action: none
