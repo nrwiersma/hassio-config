@@ -14,6 +14,19 @@ views:
           - type: entity
             entity: sensor.mains_wh
             icon_color: amber
+          - type: template
+            entity: sensor.geyser_temp_temperature
+            icon_color: >-
+              {{ 'accent' if states('binary_sensor.geyser_power') == 'on' else 'primary'
+              }}
+            double_tap_action:
+              action: none
+            tap_action:
+              action: more-info
+            hold_action:
+              action: none
+            icon: mdi:thermometer
+            content: '{{ states(''sensor.geyser_temp_temperature'') }} °C'
         alignment: center
       - square: false
         columns: 4
