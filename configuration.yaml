@@ -24,14 +24,6 @@ lovelace:
   resources:
     - url: /hacsfiles/lovelace-mushroom/mushroom.js?hacstag=444350375220
       type: module
-  dashboards:
-    ui-home:
-      title: Home
-      mode: yaml
-      filename: dashboards/home.yaml
-      icon: mdi:home
-      show_in_sidebar: true
-      require_admin: false
 
 # Enables configuration UI
 config:
