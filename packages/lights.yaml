@@ -80,47 +80,9 @@ mqtt:
       payload_not_available: "Offline"
       retain: false
 
-    # Driveway Switch
-    - unique_id: "mqtt.light.driveway"
-      name: "Driveway"
-      state_topic: "stat/driveway/POWER"
-      command_topic: "cmnd/driveway/POWER"
-      availability_topic: "tele/driveway/LWT"
-      qos: 1
-      payload_on: "ON"
-      payload_off: "OFF"
-      payload_available: "Online"
-      payload_not_available: "Offline"
-      retain: false
-
 # Automation ===============================
 
 automation:
-  - alias: Sync Tasmota states
-    initial_state: true
-    trigger:
-      platform: homeassistant
-      event: start
-    action:
-      service: mqtt.publish
-      data:
-        topic: cmnd/tasmotas/POWER0
-        payload: ''
-
-  - alias: Arrival Mode
-    trigger:
-      - platform: state
-        entity_id: group.everyone
-        from: "not_home"
-        to: "home"
-    condition:
-      - condition: state  # from sunset until sunrise
-        entity_id: sun.sun
-        state: "below_horizon"
-    action:
-        service: light.turn_on
-        entity_id: light.entrance
-
   - alias: Away Mode
     trigger:
         platform: state
