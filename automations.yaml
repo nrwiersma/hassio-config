@@ -1,83 +1,158 @@
-- alias: Lounge Lamps Toggle
-  description: ""
-  trigger:
-    - platform: device
-      type: changed_states
-      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-      entity_id: switch.lounge_right
-      domain: switch
-  condition: [ ]
-  action:
-    - if:
-        - condition: device
-          type: is_on
-          device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-          entity_id: switch.lounge_right
-          domain: switch
-      then:
-        - type: turn_on
-          device_id: b1693b2ba9a4922be1436d2bd15955c1
-          entity_id: switch.lounge_lamps
-          domain: switch
-      else:
-        - type: turn_off
-          device_id: b1693b2ba9a4922be1436d2bd15955c1
-          entity_id: switch.lounge_lamps
-          domain: switch
-  mode: single
-- alias: Lounge Lamps Sync
-  description: ""
-  trigger:
-    - platform: device
-      type: changed_states
-      device_id: b1693b2ba9a4922be1436d2bd15955c1
-      entity_id: switch.lounge_lamps
-      domain: switch
-  condition:
-    - condition: template
-      value_template: "{{ states(\"switch.lounge_lamps\") != states(\"switch.lounge_right\") }}"
-  action:
-    - if:
-        - condition: device
-          type: is_on
-          device_id: b1693b2ba9a4922be1436d2bd15955c1
-          entity_id: switch.lounge_lamps
-          domain: switch
-      then:
-        - type: turn_on
-          device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-          entity_id: switch.lounge_right
-          domain: switch
-      else:
-        - type: turn_off
-          device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-          entity_id: switch.lounge_right
-          domain: switch
-  mode: single
 - alias: Bar Lamp Toggle
-  description: ""
+  description: ''
   trigger:
-    - platform: device
-      type: changed_states
+  - platform: device
+    type: changed_states
+    device_id: 818dbeec056a1a0d674a1d926ece4097
+    entity_id: switch.bar_right
+    domain: switch
+  condition: []
+  action:
+  - if:
+    - condition: device
+      type: is_on
       device_id: 818dbeec056a1a0d674a1d926ece4097
       entity_id: switch.bar_right
       domain: switch
-  condition: [ ]
+    then:
+    - type: turn_on
+      device_id: 81474ad63b66ef687d4682a708cc6c00
+      entity_id: switch.bar_lamp
+      domain: switch
+    else:
+    - type: turn_off
+      device_id: 81474ad63b66ef687d4682a708cc6c00
+      entity_id: switch.bar_lamp
+      domain: switch
+  mode: single
+  id: 32f2dd47110c4084a67c490aebb207cf
+- id: '1695295705632'
+  alias: Battery Warning
+  description: ''
+  trigger:
+  - type: battery_level
+    platform: device
+    device_id: 56d7131d4a47c210c0c5798166701576
+    entity_id: 9bff52831e973cb2b953e0cd4c36c4cf
+    domain: sensor
+    below: 30
+  condition: []
   action:
-    - if:
-        - condition: device
-          type: is_on
-          device_id: 818dbeec056a1a0d674a1d926ece4097
-          entity_id: switch.bar_right
-          domain: switch
-      then:
-        - type: turn_on
-          device_id: 81474ad63b66ef687d4682a708cc6c00
-          entity_id: switch.bar_lamp
-          domain: switch
-      else:
-        - type: turn_off
-          device_id: 81474ad63b66ef687d4682a708cc6c00
-          entity_id: switch.bar_lamp
-          domain: switch
+  - service: notify.notify
+    data:
+      message: Home Battery is less than 30%
+      title: Battery Warning
+  mode: single
+- id: '1697891318821'
+  alias: Sync Tasmota States
+  description: When Home Assistant starts, it should ask all Tasmota devices attached
+    to MQTT for their states.
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmnd/tasmotas/POWER0
+  mode: single
+- id: '1697891499375'
+  alias: Arrival Mode
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - group.everyone
+    from: not_home
+    to: home
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.entrance
+  mode: single
+- id: '1698994857516'
+  alias: Lounge Lamps Toggle
+  description: ''
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+    entity_id: 52d80b5664ec7cb7a98841ea4603067a
+    domain: switch
+  condition: []
+  action:
+  - if:
+    - condition: device
+      type: is_on
+      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+      entity_id: 52d80b5664ec7cb7a98841ea4603067a
+      domain: switch
+    then:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.lounge_lamps
+    else:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.lounge_lamps
+  mode: single
+- id: '1698995148638'
+  alias: Lounge Lamps Sync
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.lounge_lamps
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id:
+    - light.lounge_lamps
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ states("light.lounge_lamps") != states("switch.lounge_right")
+      }}'
+  action:
+  - if:
+    - condition: state
+      entity_id: light.lounge_lamps
+      state: 'on'
+    then:
+    - type: turn_on
+      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+      entity_id: 52d80b5664ec7cb7a98841ea4603067a
+      domain: switch
+    else:
+    - type: turn_off
+      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
+      entity_id: 52d80b5664ec7cb7a98841ea4603067a
+      domain: switch
+  mode: single
+- id: '1699245302459'
+  alias: Away Mode
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: group.everyone
+    from: home
+    to: not_home
+    for:
+      minutes: 5
+  condition: []
+  action:
+  - service: light.turn_off
+    data_template:
+      entity_id: '{% set state = ''on'' %} {% set filter = [''light.driveway''] %}
+        {% set names = states.light | selectattr(''state'',''eq'', state) | rejectattr(''entity_id'',''in'',
+        filter) | map(attribute = ''entity_id'') | join('','') %} {% if names.count(''.'')
+        >= 1 %} {{ names }} {% else %} light.dummy {% endif %}'
   mode: single
