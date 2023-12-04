@@ -156,3 +156,64 @@
         filter) | map(attribute = ''entity_id'') | join('','') %} {% if names.count(''.'')
         >= 1 %} {{ names }} {% else %} light.dummy {% endif %}'
   mode: single
+- id: '1701698168472'
+  alias: Hallway Toggle
+  description: ''
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: 5a503e96ea171ee0c1e8b0fc95984630
+    entity_id: 7ee9399c615d3d2d639f19e0f73623b5
+    domain: switch
+  condition: []
+  action:
+  - if:
+    - condition: device
+      type: is_on
+      device_id: 5a503e96ea171ee0c1e8b0fc95984630
+      entity_id: 7ee9399c615d3d2d639f19e0f73623b5
+      domain: switch
+    then:
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.hallway
+    else:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.hallway
+  mode: single
+- id: '1701698367404'
+  alias: Hallway Toggle
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.hallway
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id:
+    - light.hallway
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ states("light.hallway") != states("switch.study_left") }}'
+  action:
+  - if:
+    - condition: state
+      entity_id: switch.hallway
+      state: 'on'
+    then:
+    - type: turn_on
+      device_id: 5a503e96ea171ee0c1e8b0fc95984630
+      entity_id: 7ee9399c615d3d2d639f19e0f73623b5
+      domain: switch
+    else:
+    - type: turn_off
+      device_id: 5a503e96ea171ee0c1e8b0fc95984630
+      entity_id: 7ee9399c615d3d2d639f19e0f73623b5
+      domain: switch
+  mode: single
