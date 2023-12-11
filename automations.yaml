@@ -1,31 +1,31 @@
-- alias: Bar Lamp Toggle
+- id: 32f2dd47110c4084a67c490aebb207cf
+  alias: Bar Lamp Toggle
   description: ''
   trigger:
   - platform: device
     type: changed_states
-    device_id: 818dbeec056a1a0d674a1d926ece4097
-    entity_id: switch.bar_right
-    domain: switch
+    device_id: 1e52ae403e630b468abf54b048d05463
+    entity_id: 352787007b4220ba58e20efb5b84c875
+    domain: light
   condition: []
   action:
   - if:
     - condition: device
       type: is_on
-      device_id: 818dbeec056a1a0d674a1d926ece4097
-      entity_id: switch.bar_right
-      domain: switch
+      device_id: 1e52ae403e630b468abf54b048d05463
+      entity_id: 352787007b4220ba58e20efb5b84c875
+      domain: light
     then:
     - type: turn_on
-      device_id: 81474ad63b66ef687d4682a708cc6c00
-      entity_id: switch.bar_lamp
-      domain: switch
+      device_id: 471852fb427703a8fa07627bfa791803
+      entity_id: 55f8920b7b32b5766bece29412f4dc84
+      domain: light
     else:
     - type: turn_off
-      device_id: 81474ad63b66ef687d4682a708cc6c00
-      entity_id: switch.bar_lamp
-      domain: switch
+      device_id: 471852fb427703a8fa07627bfa791803
+      entity_id: 55f8920b7b32b5766bece29412f4dc84
+      domain: light
   mode: single
-  id: 32f2dd47110c4084a67c490aebb207cf
 - id: '1695295705632'
   alias: Battery Warning
   description: ''
@@ -81,17 +81,17 @@
   trigger:
   - platform: device
     type: changed_states
-    device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-    entity_id: 52d80b5664ec7cb7a98841ea4603067a
-    domain: switch
+    device_id: 6b32f85315fb7b44284c51ea26cebe56
+    entity_id: b337b749618b7de6b6ef8fc769120fb7
+    domain: light
   condition: []
   action:
   - if:
     - condition: device
       type: is_on
-      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-      entity_id: 52d80b5664ec7cb7a98841ea4603067a
-      domain: switch
+      device_id: 6b32f85315fb7b44284c51ea26cebe56
+      entity_id: b337b749618b7de6b6ef8fc769120fb7
+      domain: light
     then:
     - service: light.turn_on
       data: {}
@@ -119,7 +119,7 @@
     to: 'on'
   condition:
   - condition: template
-    value_template: '{{ states("light.lounge_lamps") != states("switch.lounge_right")
+    value_template: '{{ states("light.lounge_lamps") != states("light.lounge_lamps_alt")
       }}'
   action:
   - if:
@@ -128,14 +128,14 @@
       state: 'on'
     then:
     - type: turn_on
-      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-      entity_id: 52d80b5664ec7cb7a98841ea4603067a
-      domain: switch
+      device_id: 6b32f85315fb7b44284c51ea26cebe56
+      entity_id: b337b749618b7de6b6ef8fc769120fb7
+      domain: light
     else:
     - type: turn_off
-      device_id: c2b2f4d998de3040c454f8ad89c7f7d1
-      entity_id: 52d80b5664ec7cb7a98841ea4603067a
-      domain: switch
+      device_id: 6b32f85315fb7b44284c51ea26cebe56
+      entity_id: b337b749618b7de6b6ef8fc769120fb7
+      domain: light
   mode: single
 - id: '1699245302459'
   alias: Away Mode
@@ -162,17 +162,17 @@
   trigger:
   - platform: device
     type: changed_states
-    device_id: 5a503e96ea171ee0c1e8b0fc95984630
-    entity_id: 7ee9399c615d3d2d639f19e0f73623b5
-    domain: switch
+    device_id: 75d1fbdbc93416f44a161546c650f008
+    entity_id: 5cd525f8e5cda8549564174c94564edb
+    domain: light
   condition: []
   action:
   - if:
     - condition: device
       type: is_on
-      device_id: 5a503e96ea171ee0c1e8b0fc95984630
-      entity_id: 7ee9399c615d3d2d639f19e0f73623b5
-      domain: switch
+      device_id: 75d1fbdbc93416f44a161546c650f008
+      entity_id: 5cd525f8e5cda8549564174c94564edb
+      domain: light
     then:
     - service: light.turn_on
       data: {}
@@ -185,7 +185,7 @@
         entity_id: light.hallway
   mode: single
 - id: '1701698367404'
-  alias: Hallway Toggle
+  alias: Hallway Sync
   description: ''
   trigger:
   - platform: state
@@ -200,7 +200,7 @@
     to: 'on'
   condition:
   - condition: template
-    value_template: '{{ states("light.hallway") != states("switch.study_left") }}'
+    value_template: '{{ states("light.hallway") != states("light.hallway_alt") }}'
   action:
   - if:
     - condition: state
@@ -208,12 +208,12 @@
       state: 'on'
     then:
     - type: turn_on
-      device_id: 5a503e96ea171ee0c1e8b0fc95984630
-      entity_id: 7ee9399c615d3d2d639f19e0f73623b5
-      domain: switch
+      device_id: 75d1fbdbc93416f44a161546c650f008
+      entity_id: 5cd525f8e5cda8549564174c94564edb
+      domain: light
     else:
     - type: turn_off
-      device_id: 5a503e96ea171ee0c1e8b0fc95984630
-      entity_id: 7ee9399c615d3d2d639f19e0f73623b5
-      domain: switch
+      device_id: 75d1fbdbc93416f44a161546c650f008
+      entity_id: 5cd525f8e5cda8549564174c94564edb
+      domain: light
   mode: single
