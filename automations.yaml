@@ -5,7 +5,7 @@
   - platform: device
     type: changed_states
     device_id: 1e52ae403e630b468abf54b048d05463
-    entity_id: 352787007b4220ba58e20efb5b84c875
+    entity_id: b634ce27247fa520f1233862767689a2
     domain: light
   condition: []
   action:
@@ -13,7 +13,7 @@
     - condition: device
       type: is_on
       device_id: 1e52ae403e630b468abf54b048d05463
-      entity_id: 352787007b4220ba58e20efb5b84c875
+      entity_id: b634ce27247fa520f1233862767689a2
       domain: light
     then:
     - type: turn_on
