@@ -46,9 +46,6 @@ logbook:
 recorder:
   purge_keep_days: 14
 
-# Enables a map showing the location of tracked devices
-map:
-
 # Track the sun
 sun:
 
