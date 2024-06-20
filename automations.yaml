@@ -2,157 +2,163 @@
   alias: Bar Lamp Toggle
   description: ''
   trigger:
-  - platform: device
-    type: changed_states
-    device_id: 1e52ae403e630b468abf54b048d05463
-    entity_id: b634ce27247fa520f1233862767689a2
-    domain: light
-  condition: []
-  action:
-  - if:
-    - condition: device
-      type: is_on
+    - platform: device
+      type: changed_states
       device_id: 1e52ae403e630b468abf54b048d05463
       entity_id: b634ce27247fa520f1233862767689a2
       domain: light
-    then:
-    - type: turn_on
-      device_id: 471852fb427703a8fa07627bfa791803
-      entity_id: 55f8920b7b32b5766bece29412f4dc84
-      domain: light
-    else:
-    - type: turn_off
-      device_id: 471852fb427703a8fa07627bfa791803
-      entity_id: 55f8920b7b32b5766bece29412f4dc84
-      domain: light
+  condition: []
+  action:
+    - if:
+        - condition: device
+          type: is_on
+          device_id: 1e52ae403e630b468abf54b048d05463
+          entity_id: b634ce27247fa520f1233862767689a2
+          domain: light
+      then:
+        - service: light.turn_on
+          metadata: {}
+          data: {}
+          target:
+            entity_id: light.bar_lamps
+      else:
+        - service: light.turn_off
+          target:
+            entity_id:
+              - light.bar_lamps
+          data: {}
   mode: single
 - id: '1695295705632'
   alias: Battery Warning
   description: ''
   trigger:
-  - type: battery_level
-    platform: device
-    device_id: 56d7131d4a47c210c0c5798166701576
-    entity_id: 9bff52831e973cb2b953e0cd4c36c4cf
-    domain: sensor
-    below: 30
+    - type: battery_level
+      platform: device
+      device_id: e78fbcf55c3802032e59f015b674b19e
+      entity_id: ada3eacc8a8dda9d777877785e04efd3
+      domain: sensor
+      below: 30
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
   condition: []
   action:
-  - service: notify.notify
-    data:
-      message: Home Battery is less than 30%
-      title: Battery Warning
+    - service: notify.notify
+      data:
+        message: Home Battery is less than 30%
+        title: Battery Warning
   mode: single
 - id: '1697891318821'
   alias: Sync Tasmota States
   description: When Home Assistant starts, it should ask all Tasmota devices attached
     to MQTT for their states.
   trigger:
-  - platform: homeassistant
-    event: start
+    - platform: homeassistant
+      event: start
   condition: []
   action:
-  - service: mqtt.publish
-    data:
-      topic: cmnd/tasmotas/POWER0
+    - service: mqtt.publish
+      data:
+        topic: cmnd/tasmotas/POWER0
   mode: single
 - id: '1697891499375'
   alias: Arrival Mode
   description: ''
   trigger:
-  - platform: state
-    entity_id:
-    - group.everyone
-    from: not_home
-    to: home
+    - platform: state
+      entity_id:
+        - group.everyone
+      from: not_home
+      to: home
   condition:
-  - condition: state
-    entity_id: sun.sun
-    state: below_horizon
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
   action:
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id: light.entrance
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.entrance
   mode: single
 - id: '1698994857516'
   alias: Lounge Lamps Toggle
   description: ''
   trigger:
-  - platform: device
-    type: changed_states
-    device_id: 6b32f85315fb7b44284c51ea26cebe56
-    entity_id: b337b749618b7de6b6ef8fc769120fb7
-    domain: light
-  condition: []
-  action:
-  - if:
-    - condition: device
-      type: is_on
+    - platform: device
+      type: changed_states
       device_id: 6b32f85315fb7b44284c51ea26cebe56
       entity_id: b337b749618b7de6b6ef8fc769120fb7
       domain: light
-    then:
-    - service: light.turn_on
-      data: {}
-      target:
-        entity_id: light.lounge_lamps
-    else:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id: light.lounge_lamps
+  condition: []
+  action:
+    - if:
+        - condition: device
+          type: is_on
+          device_id: 6b32f85315fb7b44284c51ea26cebe56
+          entity_id: b337b749618b7de6b6ef8fc769120fb7
+          domain: light
+      then:
+        - service: light.turn_on
+          data: {}
+          target:
+            entity_id: light.lounge_lamps
+      else:
+        - service: light.turn_off
+          data: {}
+          target:
+            entity_id: light.lounge_lamps
   mode: single
 - id: '1698995148638'
   alias: Lounge Lamps Sync
   description: ''
   trigger:
-  - platform: state
-    entity_id:
-    - light.lounge_lamps
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id:
-    - light.lounge_lamps
-    from: 'off'
-    to: 'on'
+    - platform: state
+      entity_id:
+        - light.lounge_lamps
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id:
+        - light.lounge_lamps
+      from: 'off'
+      to: 'on'
   condition:
-  - condition: template
-    value_template: '{{ states("light.lounge_lamps") != states("light.lounge_lamps_alt")
+    - condition: template
+      value_template: '{{ states("light.lounge_lamps") != states("light.lounge_lamps_alt")
       }}'
   action:
-  - if:
-    - condition: state
-      entity_id: light.lounge_lamps
-      state: 'on'
-    then:
-    - type: turn_on
-      device_id: 6b32f85315fb7b44284c51ea26cebe56
-      entity_id: b337b749618b7de6b6ef8fc769120fb7
-      domain: light
-    else:
-    - type: turn_off
-      device_id: 6b32f85315fb7b44284c51ea26cebe56
-      entity_id: b337b749618b7de6b6ef8fc769120fb7
-      domain: light
+    - if:
+        - condition: state
+          entity_id: light.lounge_lamps
+          state: 'on'
+      then:
+        - type: turn_on
+          device_id: 6b32f85315fb7b44284c51ea26cebe56
+          entity_id: b337b749618b7de6b6ef8fc769120fb7
+          domain: light
+      else:
+        - type: turn_off
+          device_id: 6b32f85315fb7b44284c51ea26cebe56
+          entity_id: b337b749618b7de6b6ef8fc769120fb7
+          domain: light
   mode: single
 - id: '1699245302459'
   alias: Away Mode
   description: ''
   trigger:
-  - platform: state
-    entity_id: group.everyone
-    from: home
-    to: not_home
-    for:
-      minutes: 5
+    - platform: state
+      entity_id: group.everyone
+      from: home
+      to: not_home
+      for:
+        minutes: 5
   condition: []
   action:
-  - service: light.turn_off
-    data_template:
-      entity_id: '{% set state = ''on'' %} {% set filter = [''light.driveway''] %}
-        {% set names = states.light | selectattr(''state'',''eq'', state) | rejectattr(''entity_id'',''in'',
+    - service: light.turn_off
+      data_template:
+        entity_id: '{% set state = ''on'' %} {% set filter = [''light.driveway'', ''light.garden'']
+        %} {% set names = states.light | selectattr(''state'',''eq'', state) | rejectattr(''entity_id'',''in'',
         filter) | map(attribute = ''entity_id'') | join('','') %} {% if names.count(''.'')
         >= 1 %} {{ names }} {% else %} light.dummy {% endif %}'
   mode: single
@@ -160,60 +166,60 @@
   alias: Hallway Toggle
   description: ''
   trigger:
-  - platform: device
-    type: changed_states
-    device_id: 75d1fbdbc93416f44a161546c650f008
-    entity_id: 5cd525f8e5cda8549564174c94564edb
-    domain: light
-  condition: []
-  action:
-  - if:
-    - condition: device
-      type: is_on
+    - platform: device
+      type: changed_states
       device_id: 75d1fbdbc93416f44a161546c650f008
       entity_id: 5cd525f8e5cda8549564174c94564edb
       domain: light
-    then:
-    - service: light.turn_on
-      data: {}
-      target:
-        entity_id: light.hallway
-    else:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id: light.hallway
+  condition: []
+  action:
+    - if:
+        - condition: device
+          type: is_on
+          device_id: 75d1fbdbc93416f44a161546c650f008
+          entity_id: 5cd525f8e5cda8549564174c94564edb
+          domain: light
+      then:
+        - service: light.turn_on
+          data: {}
+          target:
+            entity_id: light.hallway
+      else:
+        - service: light.turn_off
+          data: {}
+          target:
+            entity_id: light.hallway
   mode: single
 - id: '1701698367404'
   alias: Hallway Sync
   description: ''
   trigger:
-  - platform: state
-    entity_id:
-    - light.hallway
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id:
-    - light.hallway
-    from: 'off'
-    to: 'on'
+    - platform: state
+      entity_id:
+        - light.hallway
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id:
+        - light.hallway
+      from: 'off'
+      to: 'on'
   condition:
-  - condition: template
-    value_template: '{{ states("light.hallway") != states("light.hallway_alt") }}'
+    - condition: template
+      value_template: '{{ states("light.hallway") != states("light.hallway_alt") }}'
   action:
-  - if:
-    - condition: state
-      entity_id: switch.hallway
-      state: 'on'
-    then:
-    - type: turn_on
-      device_id: 75d1fbdbc93416f44a161546c650f008
-      entity_id: 5cd525f8e5cda8549564174c94564edb
-      domain: light
-    else:
-    - type: turn_off
-      device_id: 75d1fbdbc93416f44a161546c650f008
-      entity_id: 5cd525f8e5cda8549564174c94564edb
-      domain: light
+    - if:
+        - condition: state
+          entity_id: switch.hallway
+          state: 'on'
+      then:
+        - type: turn_on
+          device_id: 75d1fbdbc93416f44a161546c650f008
+          entity_id: 5cd525f8e5cda8549564174c94564edb
+          domain: light
+      else:
+        - type: turn_off
+          device_id: 75d1fbdbc93416f44a161546c650f008
+          entity_id: 5cd525f8e5cda8549564174c94564edb
+          domain: light
   mode: single
