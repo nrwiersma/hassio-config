@@ -12,4 +12,3 @@ mqtt:
       payload_off: "OFF"
       payload_available: "Online"
       payload_not_available: "Offline"
-      retain: false
