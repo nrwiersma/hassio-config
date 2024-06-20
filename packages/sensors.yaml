@@ -3,11 +3,8 @@ mqtt:
     # Reservoir
     - unique_id: mqtt.sensor.reservoir-distance
       name: Reservoir
-      state_topic: "stat/reservoir/STATE"
+      state_topic: "tele/reservoir/SENSOR"
       value_template: "{{value_json['SR04'].Distance }}"
-      availability_topic: "tele/reservoir/LWT"
       unit_of_measurement : cm
       device_class: distance
       qos: 1
-      payload_available: Online
-      payload_not_available: Offline
