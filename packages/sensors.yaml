@@ -17,5 +17,5 @@ sensor:
     entity_id: sensor.reservoir
     filters:
       - filter: lowpass
-        time_constant: 2
+        time_constant: 10
         precision: 2
