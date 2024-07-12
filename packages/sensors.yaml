@@ -16,6 +16,9 @@ sensor:
     name: Reservoir Smoothed
     entity_id: sensor.reservoir
     filters:
+      - filter: outlier
+        window_size: 10
+        radius: 1.0
       - filter: lowpass
         time_constant: 10
         precision: 2
