@@ -12,7 +12,7 @@ sensor:
   - platform: filter
     unique_id: filter.sensor.reservoir-smoothed
     name: Reservoir Smoothed
-    entity_id: sensor.reservoir-smoothed
+    entity_id: sensor.reservoir_smoothed
     filters:
       - filter: lowpass
         time_constant: 10
