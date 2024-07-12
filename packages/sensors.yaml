@@ -4,7 +4,7 @@ mqtt:
     - unique_id: mqtt.sensor.reservoir-distance
       name: Reservoir
       state_topic: "tele/reservoir/SENSOR"
-      value_template: "{{value_json['SR04'].Distance }}"
+      value_template: "{{value_json['VL53L0X'].Distance }}"
       unit_of_measurement : cm
       device_class: distance
       qos: 1
