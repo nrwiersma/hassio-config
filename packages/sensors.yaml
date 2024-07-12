@@ -1,10 +1,19 @@
-mqtt:
-  sensor:
-    # Reservoir
-    - unique_id: mqtt.sensor.reservoir-distance
-      name: Reservoir
-      state_topic: "tele/reservoir/SENSOR"
-      value_template: "{{value_json['VL53L0X'].Distance }}"
-      unit_of_measurement : cm
-      device_class: distance
-      qos: 1
+sensor:
+  # Reservoir
+  - platform: mqtt
+    unique_id: mqtt.sensor.reservoir-distance
+    name: Reservoir
+    state_topic: "tele/reservoir/SENSOR"
+    value_template: "{{value_json['VL53L0X'].Distance }}"
+    unit_of_measurement: cm
+    device_class: distance
+    qos: 1
+  # Reservoir Smoothing
+  - platform: filter
+    unique_id: filter.sensor.reservoir-smoothed
+    name: Reservoir Smoothed
+    entity_id: sensor.reservoir_smoothed
+    filters:
+      - filter: lowpass
+        time_constant: 10
+        precision: 2
