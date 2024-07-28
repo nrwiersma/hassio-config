@@ -62,10 +62,10 @@ cloud:
 # System health
 system_health:
 
-
 # Includes =================================
 
 automation: !include automations.yaml
 group: !include groups.yaml
+homekit: !include homekit.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml

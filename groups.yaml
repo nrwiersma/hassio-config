@@ -1,0 +1,6 @@
+# Custom everyone group
+everyone:
+  name: everyone
+  entities:
+    - person.monika
+    - person.nick
