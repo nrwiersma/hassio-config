@@ -22,3 +22,10 @@ sensor:
       - filter: lowpass
         time_constant: 10
         precision: 2
+  - platform: filter
+    unique_id: filter.sensor.reservoir_pressure_smoothed
+    name: Pressure Smoothed
+    entity_id: sensor.reservoir_pressure_smoothed
+    filters:
+      - filter: time_simple_moving_average
+        window_size: 00:05
