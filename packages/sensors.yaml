@@ -28,4 +28,4 @@ sensor:
     entity_id: sensor.reservoir_pressure_smoothed
     filters:
       - filter: time_simple_moving_average
-        window_size: 00:01
+        window_size: 00:05
