@@ -1,6 +1,5 @@
 # Custom everyone group
 everyone:
-  unique_id: group.person_everyone
   name: Everyone
   entities:
     - person.monika
