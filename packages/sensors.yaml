@@ -25,7 +25,7 @@ sensor:
   - platform: filter
     unique_id: filter.sensor.reservoir_pressure_smoothed
     name: Pressure Smoothed
-    entity_id: sensor.reservoir_pressure_smoothed
+    entity_id: sensor.reservoir_pressure
     filters:
       - filter: time_simple_moving_average
         window_size: 00:05
