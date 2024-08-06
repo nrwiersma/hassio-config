@@ -5,5 +5,8 @@ sensor:
     name: Pressure Smoothed
     entity_id: sensor.reservoir_pressure
     filters:
+      - filter: outlier
+        window_size: 4
+        radius: 2.0
       - filter: time_simple_moving_average
         window_size: 00:05
