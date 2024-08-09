@@ -1,0 +1,38 @@
+cover:
+  - platform: template
+    covers:
+      garage_door:
+        device_class: garage
+        unique_id: cover.garage_right_door
+        friendly_name: "Garage Right Door"
+        availability_template: "{{ not is_state('binary_sensor.garage_right_door', 'unavailable') }}"
+        position_template: >-
+          {% if states('binary_sensor.garage_right_door')|bool == true %}
+            100
+          {% else %}
+            0
+          {% endif %}
+        open_cover:
+          - condition: state
+            entity_id: binary_sensor.garage_right_door
+            state: "off"
+          - action: switch.turn_on
+            target:
+              entity_id: switch.garage_right_door
+        close_cover:
+          - condition: state
+            entity_id: binary_sensor.garage_right_door
+            state: "on"
+          - action: switch.turn_on
+            target:
+              entity_id: switch.garage_right_door
+        stop_cover:
+          action: switch.turn_on
+          target:
+            entity_id: switch.garage_right_door
+        icon_template: >-
+          {% if states('binary_sensor.garage_right_door')|bool == true %}
+            mdi:garage-open
+          {% else %}
+            mdi:garage
+          {% endif %}
