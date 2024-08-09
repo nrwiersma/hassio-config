@@ -1,0 +1,31 @@
+cover:
+  - platform: template
+    covers:
+      garage_door:
+        device_class: garage
+        friendly_name: "Garage Right Door"
+        position_template: "{{ states('sensor.garage_right_door') }}"
+        open_cover:
+          - condition: state
+            entity_id: sensor.garage_right_door
+            state: "off"
+          - action: switch.turn_on
+            target:
+              entity_id: switch.garage_right_door
+        close_cover:
+          - condition: state
+            entity_id: sensor.garage_right_door
+            state: "on"
+          - action: switch.turn_on
+            target:
+              entity_id: switch.garage_right_door
+        stop_cover:
+          action: switch.turn_on
+          target:
+            entity_id: switch.garage_right_door
+        icon_template: >-
+          {% if states('sensor.garage_right_door')|float > 0 %}
+            mdi:garage-open
+          {% else %}
+            mdi:garage
+          {% endif %}
