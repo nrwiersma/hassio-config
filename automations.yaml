@@ -242,3 +242,67 @@
     target:
       entity_id: cover.garage_door_right
   mode: single
+- id: '1729007513489'
+  alias: Ensuite Fan Turn On
+  description: Turn the Ensuite Fan on if the Ensuite Light is on and the humidity
+    is over 70%
+  triggers:
+  - type: turned_on
+    device_id: 06ae4d057e2d6398fe2f2f2d234b1ad8
+    entity_id: 17ce545a487b39153ebb467d637bbeb2
+    domain: light
+    trigger: device
+  - type: humidity
+    device_id: 89070241592820c6d78055bd9809e27e
+    entity_id: b5af2f873d271994d61d0397a4d26d06
+    domain: sensor
+    trigger: device
+    above: 70
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions:
+  - condition: device
+    type: is_on
+    device_id: 06ae4d057e2d6398fe2f2f2d234b1ad8
+    entity_id: 17ce545a487b39153ebb467d637bbeb2
+    domain: light
+  - type: is_humidity
+    condition: device
+    device_id: 89070241592820c6d78055bd9809e27e
+    entity_id: b5af2f873d271994d61d0397a4d26d06
+    domain: sensor
+    above: 70
+  actions:
+  - type: turn_on
+    device_id: 77b110f52a0528c65acb81f27afc7008
+    entity_id: aae4b89c58bb9c953b44c00243e75b61
+    domain: switch
+  mode: queued
+  max: 10
+- id: '1729007699439'
+  alias: Ensuite Fan Turn Off
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: 06ae4d057e2d6398fe2f2f2d234b1ad8
+    entity_id: 17ce545a487b39153ebb467d637bbeb2
+    domain: light
+    trigger: device
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions:
+  - condition: device
+    type: is_on
+    device_id: 77b110f52a0528c65acb81f27afc7008
+    entity_id: aae4b89c58bb9c953b44c00243e75b61
+    domain: switch
+  actions:
+  - type: turn_off
+    device_id: 77b110f52a0528c65acb81f27afc7008
+    entity_id: aae4b89c58bb9c953b44c00243e75b61
+    domain: switch
+  mode: single
