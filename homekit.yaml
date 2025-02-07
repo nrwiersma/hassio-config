@@ -4,6 +4,8 @@ filter:
     - light
     - switch
   exclude_entity_globs:
+    - light.*_alt
+    - switch.*_alt
     - switch.deye_sunsynk_sol_ark*
     - switch.*_pir
     - switch.z0*
@@ -13,5 +15,9 @@ filter:
   exclude_entities:
     - switch.lounge_lamp_left
     - switch.lounge_lamp_right
+    - light.lounge_lamp_left
+    - light.lounge_lamp_right
     - switch.bar_lamp_left
     - switch.bar_lamp_right
+    - light.bar_lamp_left
+    - light.bar_lamp_right
