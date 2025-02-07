@@ -12,6 +12,12 @@ cover:
           {% else %}
             0
           {% endif %}
+        icon_template: >-
+          {% if states('binary_sensor.garage_right_door')|bool == true %}
+            mdi:garage-open
+          {% else %}
+            mdi:garage
+          {% endif %}
         open_cover:
           - condition: state
             entity_id: binary_sensor.garage_right_door
@@ -30,9 +36,3 @@ cover:
           action: switch.turn_on
           target:
             entity_id: switch.garage_right_door
-        icon_template: >-
-          {% if states('binary_sensor.garage_right_door')|bool == true %}
-            mdi:garage-open
-          {% else %}
-            mdi:garage
-          {% endif %}
