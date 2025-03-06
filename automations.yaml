@@ -253,8 +253,8 @@
     domain: light
     trigger: device
   - type: humidity
-    device_id: 89070241592820c6d78055bd9809e27e
-    entity_id: b5af2f873d271994d61d0397a4d26d06
+    device_id: 841005c29eb9f9e791ac9ea2e488843b
+    entity_id: 1daae84453939a2579f8be7ce5b12783
     domain: sensor
     trigger: device
     above: 70
@@ -270,8 +270,8 @@
     domain: light
   - type: is_humidity
     condition: device
-    device_id: 89070241592820c6d78055bd9809e27e
-    entity_id: b5af2f873d271994d61d0397a4d26d06
+    device_id: 841005c29eb9f9e791ac9ea2e488843b
+    entity_id: 1daae84453939a2579f8be7ce5b12783
     domain: sensor
     above: 70
   actions:
