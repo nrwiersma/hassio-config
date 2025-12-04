@@ -262,6 +262,16 @@
       hours: 0
       minutes: 5
       seconds: 0
+  - type: humidity
+    device_id: 841005c29eb9f9e791ac9ea2e488843b
+    entity_id: 1daae84453939a2579f8be7ce5b12783
+    domain: sensor
+    trigger: device
+    below: 70
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
   conditions:
   - condition: device
     type: is_on
