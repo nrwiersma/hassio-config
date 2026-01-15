@@ -284,3 +284,36 @@
     entity_id: aae4b89c58bb9c953b44c00243e75b61
     domain: switch
   mode: single
+- id: '1768329723358'
+  alias: Turn on outside lights
+  description: Turn on the outside lights when the sun sets.
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 00:10:00
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 3c68de0a3595fec2b4f5b7034871cc39
+    entity_id: acc6def2b8fb7a8593bbe7bcd0520b5b
+    domain: light
+  mode: single
+- id: '1768330145336'
+  alias: Turn off outside lights
+  description: Tutn off the outside lights at sunrise if they are on.
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: -00:10:00
+  conditions:
+  - condition: device
+    type: is_on
+    device_id: 3c68de0a3595fec2b4f5b7034871cc39
+    entity_id: acc6def2b8fb7a8593bbe7bcd0520b5b
+    domain: light
+  actions:
+  - type: turn_off
+    device_id: 3c68de0a3595fec2b4f5b7034871cc39
+    entity_id: acc6def2b8fb7a8593bbe7bcd0520b5b
+    domain: light
+  mode: single
