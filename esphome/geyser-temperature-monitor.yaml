@@ -1,30 +1,74 @@
-# Board: Espressif ESP32-C6-DevKitM-1 (Espressif)
-# Definition: definitions/boards/esp32-c6-devkitm-1/manifest.yaml
-
 esphome:
   name: geyser-temperature-monitor
-  friendly_name: Geyser Temperature Monitor
+  friendly_name: "Geyser Temperature Monitor"
 
 esp32:
-  variant: esp32c6
-  flash_size: 4MB
+  board: esp32dev
   framework:
-    type: esp-idf
+    type: arduino
 
 logger:
 
 api:
-  encryption:
-    key: "HxFMz4Ylw2bXe8s9YpHBnue5tcpyZz40gagjoMceA7s="
 
 ota:
   - platform: esphome
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  ap:
-    ssid: Geyser Temperat Fallback Hotspot
-    password: "aZWm2RwT8XVN"
 
-captive_portal:
+# globals:
+#   - id: temp_offset
+#     type: float
+#     restore_value: true
+#     initial_value: "1.2"
+
+number:
+  - platform: template
+    name: "Temperature Offset"
+    id: temperature_offset_number
+    icon: mdi:thermometer-plus
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    initial_value: 1.2
+    min_value: -10
+    max_value: 10
+    step: 0.1
+    unit_of_measurement: "°C"
+
+sensor:
+  - platform: adc
+    pin: GPIO36
+    id: geyser_adc_raw
+    attenuation: 12db
+    update_interval: 60s
+    filters:
+      - sliding_window_moving_average:
+          window_size: 5
+          send_every: 5
+
+  # Convert voltage -> NTC resistance
+  # Tasmota ADCParam: 36,10000,10000,3455,0
+  #   param1 = 10000  -> bridge/reference resistor (this "resistor:" value)
+  #   param2 = 10000  -> NTC resistance at 25°C (reference_resistance)
+  #   param3 = 3455   -> Beta coefficient (b_constant)
+  - platform: resistance
+    id: geyser_ntc_resistance
+    sensor: geyser_adc_raw
+    configuration: DOWNSTREAM   # fixed 10k resistor is ADC->GND, NTC is Vcc->ADC
+    resistor: 10000ohm
+
+  # Convert resistance -> temperature using the Beta equation
+  - platform: ntc
+    sensor: geyser_ntc_resistance
+    name: "Geyser Temperature"
+    id: geyser_temperature
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    calibration:
+      b_constant: 3455
+      reference_temperature: 25°C
+      reference_resistance: 10000ohm
+    filters:
+      # applies the configurable offset above, same role as Tasmota's TempOffset
+      - lambda: return x + id(temp_offset);
