@@ -70,7 +70,7 @@ sensor:
     update_interval: 60s
     filters:
       - sliding_window_moving_average:
-          window_size: 30
+          window_size: 15
           send_every: 5
   - platform: resistance
     id: geyser_ntc_resistance
