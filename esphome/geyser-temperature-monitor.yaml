@@ -67,7 +67,7 @@ sensor:
     pin: GPIO36
     id: geyser_adc_raw
     attenuation: 12db
-    update_interval: 1s
+    update_interval: 5s
     internal: true
     filters:
       - sliding_window_moving_average:
