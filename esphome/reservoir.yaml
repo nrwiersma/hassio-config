@@ -1,0 +1,138 @@
+esphome:
+  name: reservoir-monitor
+  friendly_name: Reservoir Monitor
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+    version: recommended
+
+logger:
+  level: "DEBUG"
+
+api:
+  id: api_id
+
+ota:
+  - platform: esphome
+
+http_request:
+
+wifi:
+
+esp32_improv:
+  authorizer: none
+
+# ADS1115 on hardware I2C pins
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+  id: bus_a
+
+ads1115:
+  - address: 0x48
+    id: ads1115_hub
+
+# -----------------------------------------------------------------
+# Tank cross-sectional area, exposed as an adjustable entity so you
+# can tune the volume calc from Home Assistant without reflashing.
+# Replaces the hardcoded "0.5555555556" constant from your old
+# template sensor.
+# -----------------------------------------------------------------
+number:
+  - platform: template
+    name: "Reservoir Tank Area"
+    id: tank_area
+    icon: "mdi:tape-measure"
+    unit_of_measurement: "m²"
+    min_value: 0.01
+    max_value: 50
+    step: 0.0001
+    initial_value: 0.5555555556
+    optimistic: true
+    restore_value: true
+    entity_category: config
+
+sensor:
+  # ===================================================================
+  # INLET PRESSURE — voltage output sensor, 0.5V-4.5V = 0-1600 kPa
+  # ADS1115 gain 6.144 gives full range headroom for 4.5V max input,
+  # and matches the 0.1875 mV/count LSB used in the original rule.
+  # ===================================================================
+  - platform: ads1115
+    ads1115_id: ads1115_hub
+    multiplexer: 'A0_GND'
+    gain: 6.144
+    name: "Inlet Pressure Raw Voltage"
+    id: inlet_pressure_voltage
+    update_interval: 1s
+    internal: true
+    filters:
+      - sliding_window_moving_average:
+          window_size: 15
+          send_every: 5
+
+  - platform: template
+    name: "Inlet Pressure"
+    id: inlet_pressure
+    unit_of_measurement: "kPa"
+    device_class: pressure
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: 5s
+    lambda: |-
+      // Convert V -> mV, then apply 0.5V/4.5V -> 0/1600 kPa scale.
+      // kPa = (mV - 500) * (1600 / 4000)
+      float mv = id(inlet_pressure_voltage).state * 1000.0;
+      return (mv - 500.0) * 0.4;
+
+  # ===================================================================
+  # RESERVOIR LEVEL — 4-20mA loop sensor via 120 ohm shunt,
+  # 4mA = 0m depth, 20mA = 5m depth (sensor outputs depth directly,
+  # no hydrostatic conversion needed).
+  # Gain 4.096 covers the 2.4V max (20mA * 120 ohm) with good headroom.
+  # ===================================================================
+  - platform: ads1115
+    ads1115_id: ads1115_hub
+    multiplexer: 'A1_GND'
+    gain: 4.096
+    name: "Reservoir Level Raw Voltage"
+    id: reservoir_level_voltage
+    update_interval: 1s
+    internal: true
+    filters:
+      - sliding_window_moving_average:
+          window_size: 15
+          send_every: 5
+
+  - platform: template
+    name: "Reservoir Depth"
+    id: reservoir_depth
+    unit_of_measurement: "m"
+    device_class: distance
+    state_class: measurement
+    accuracy_decimals: 3
+    update_interval: 5s
+    lambda: |-
+      // mV -> mA across 120 ohm shunt, then 4-20mA -> 0-5m depth
+      float mv = id(reservoir_level_voltage).state * 1000.0;
+      float ma = mv / 120.0;
+      return (ma - 4.0) * (5.0 / 16.0);
+
+  - platform: template
+    name: "Reservoir Volume"
+    id: reservoir_volume
+    unit_of_measurement: "L"
+    device_class: volume_storage
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: 5s
+    lambda: |-
+      // volume(L) = depth(m) * 1000 * tank_area(m^2)
+      // Mirrors your original HA template, but tank_area is now
+      // live-adjustable via the "Reservoir Tank Area" number entity.
+      float depth = id(reservoir_depth).state;
+      float area = id(tank_area).state;
+      return depth * 1000.0 * area;
