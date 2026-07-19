@@ -136,8 +136,7 @@ sensor:
   - platform: template
     name: "Reservoir Percentage"
     id: reservoir_percentage
-    unit_of_measurement: "m"
-    device_class: distance
+    unit_of_measurement: "%"
     state_class: measurement
     accuracy_decimals: 2
     update_interval: 5s
