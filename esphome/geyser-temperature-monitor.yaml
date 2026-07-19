@@ -71,7 +71,7 @@ sensor:
     internal: true
     filters:
       - sliding_window_moving_average:
-          window_size: 15
+          window_size: 30
           send_every: 5
   - platform: resistance
     id: geyser_ntc_resistance
@@ -100,7 +100,7 @@ sensor:
     icon: "mdi:percent"
     unit_of_measurement: "%"
     state_class: measurement
-    accuracy_decimals: 2
+    accuracy_decimals: 1
     update_interval: 5s
     lambda: |-
       // percentage = depth(m) / tank_depth(m) * 100
