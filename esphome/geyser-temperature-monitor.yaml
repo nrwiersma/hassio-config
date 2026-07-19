@@ -26,6 +26,30 @@ esp32_improv:
 
 number:
   - platform: template
+    name: "Temperature Minimum"
+    id: geyser_temp_min
+    icon: mdi:thermometer-plus
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    initial_value: 20
+    min_value: 0
+    max_value: 100
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: template
+    name: "Temperature Maximum"
+    id: geyser_temp_max
+    icon: mdi:thermometer-plus
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    initial_value: 60
+    min_value: 0
+    max_value: 100
+    step: 0.1
+    unit_of_measurement: "°C"
+  - platform: template
     name: "Temperature Offset"
     id: temp_offset
     icon: mdi:thermometer-plus
@@ -68,3 +92,18 @@ sensor:
       - lambda: |-
           float offset = id(temp_offset).state;
           return x + offset;
+
+  - platform: template
+    name: "Geyser Hot Water Percentage"
+    id: geyser_hot_water_percentage
+    icon: "mdi:percent"
+    unit_of_measurement: "%"
+    state_class: measurement
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      // percentage = depth(m) / tank_depth(m) * 100
+      float temp = id(geyser_temperature).state;
+      float min = id(geyser_temp_min).state;
+      float max = id(geyser_temp_max).state;
+      return (temp - min) / (max - min) * 100;
