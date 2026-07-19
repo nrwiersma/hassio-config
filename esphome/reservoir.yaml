@@ -142,7 +142,7 @@ sensor:
     accuracy_decimals: 2
     update_interval: 5s
     lambda: |-
-      // percentage = depth(m) / tank_depth(m)
+      // percentage = depth(m) / tank_depth(m) * 100
       float depth = id(reservoir_depth).state;
       float total = id(tank_depth).state;
       return (depth / total) * 100;
