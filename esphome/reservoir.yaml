@@ -69,6 +69,7 @@ sensor:
   # ===================================================================
   - platform: ads1115
     ads1115_id: ads1115_hub
+    sample_rate: 64
     multiplexer: 'A0_GND'
     gain: 6.144
     name: "Inlet Pressure Raw Voltage"
@@ -102,6 +103,7 @@ sensor:
   # ===================================================================
   - platform: ads1115
     ads1115_id: ads1115_hub
+    sample_rate: "64"
     multiplexer: 'A1_GND'
     gain: 4.096
     name: "Reservoir Level Raw Voltage"
