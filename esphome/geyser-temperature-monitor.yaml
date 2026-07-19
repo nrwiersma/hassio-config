@@ -5,27 +5,29 @@ esphome:
 esp32:
   board: esp32dev
   framework:
-    type: arduino
+    type: esp-idf
+    version: recommended
 
 logger:
+  level: "DEBUG"
 
 api:
+  id: api_id
 
 ota:
   - platform: esphome
 
+http_request:
+
 wifi:
 
-# globals:
-#   - id: temp_offset
-#     type: float
-#     restore_value: true
-#     initial_value: "1.2"
+esp32_improv:
+  authorizer: none
 
 number:
   - platform: template
     name: "Temperature Offset"
-    id: temperature_offset_number
+    id: temp_offset
     icon: mdi:thermometer-plus
     entity_category: config
     optimistic: true
@@ -44,21 +46,14 @@ sensor:
     update_interval: 60s
     filters:
       - sliding_window_moving_average:
-          window_size: 5
+          window_size: 30
           send_every: 5
-
-  # Convert voltage -> NTC resistance
-  # Tasmota ADCParam: 36,10000,10000,3455,0
-  #   param1 = 10000  -> bridge/reference resistor (this "resistor:" value)
-  #   param2 = 10000  -> NTC resistance at 25°C (reference_resistance)
-  #   param3 = 3455   -> Beta coefficient (b_constant)
   - platform: resistance
     id: geyser_ntc_resistance
     sensor: geyser_adc_raw
-    configuration: DOWNSTREAM   # fixed 10k resistor is ADC->GND, NTC is Vcc->ADC
-    resistor: 10000ohm
+    configuration: DOWNSTREAM
+    resistor: 10kΩ
 
-  # Convert resistance -> temperature using the Beta equation
   - platform: ntc
     sensor: geyser_ntc_resistance
     name: "Geyser Temperature"
@@ -70,5 +65,6 @@ sensor:
       reference_temperature: 25°C
       reference_resistance: 10000ohm
     filters:
-      # applies the configurable offset above, same role as Tasmota's TempOffset
-      - lambda: return x + id(temp_offset);
+      - lambda: |-
+          float offset = id(temp_offset).state;
+          return x + offset;
