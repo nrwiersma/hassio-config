@@ -35,12 +35,6 @@ ads1115:
   - address: 0x48
     id: ads1115_hub
 
-# -----------------------------------------------------------------
-# Tank cross-sectional area, exposed as an adjustable entity so you
-# can tune the volume calc from Home Assistant without reflashing.
-# Replaces the hardcoded "0.5555555556" constant from your old
-# template sensor.
-# -----------------------------------------------------------------
 number:
   - platform: template
     name: "Reservoir Tank Area"
