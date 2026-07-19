@@ -191,25 +191,6 @@
       entity_id: 5cd525f8e5cda8549564174c94564edb
       domain: light
   mode: single
-- id: '1721813684522'
-  alias: Open Garage Door
-  description: Opens the garage door
-  trigger:
-  - platform: event
-    event_data:
-      actionID: 33D86A49-24D3-4071-AB70-23593799024A
-    event_type: ios.action_fired
-  condition:
-  - condition: state
-    entity_id: cover.garage_door_right
-    state: closed
-  action:
-  - service: cover.open_cover
-    metadata: {}
-    data: {}
-    target:
-      entity_id: cover.garage_door_right
-  mode: single
 - id: '1729007513489'
   alias: Ensuite Fan Turn On
   description: Turn the Ensuite Fan on if the Ensuite Light is on and the humidity
@@ -285,7 +266,7 @@
     domain: switch
   mode: single
 - id: '1768329723358'
-  alias: Turn on outside lights
+  alias: Turn on Outside Lights
   description: Turn on the outside lights when the sun sets.
   triggers:
   - trigger: sun
@@ -293,27 +274,96 @@
     offset: 00:10:00
   conditions: []
   actions:
-  - type: turn_on
-    device_id: 3c68de0a3595fec2b4f5b7034871cc39
-    entity_id: acc6def2b8fb7a8593bbe7bcd0520b5b
-    domain: light
+  - action: light.turn_on
+    metadata: {}
+    target:
+      device_id:
+      - 3c68de0a3595fec2b4f5b7034871cc39
+      - 5616f138ff4110e33539bcaf55afa7a3
+      - ef6d82ffdb2d62f83156cc7ca8062f70
+    data: {}
   mode: single
 - id: '1768330145336'
-  alias: Turn off outside lights
+  alias: Turn off Outside Lights
   description: Tutn off the outside lights at sunrise if they are on.
   triggers:
   - trigger: sun
     event: sunrise
     offset: -00:10:00
-  conditions:
-  - condition: device
-    type: is_on
-    device_id: 3c68de0a3595fec2b4f5b7034871cc39
-    entity_id: acc6def2b8fb7a8593bbe7bcd0520b5b
-    domain: light
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    target:
+      device_id:
+      - 3c68de0a3595fec2b4f5b7034871cc39
+      - 5616f138ff4110e33539bcaf55afa7a3
+      - ef6d82ffdb2d62f83156cc7ca8062f70
+    data: {}
+  mode: single
+- id: '1778681968638'
+  alias: Turn on Geyser
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - schedule.geyser
+    to:
+    - 'on'
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.geyser
+  mode: single
+- id: '1778682444922'
+  alias: Turn off Geyser
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - schedule.geyser
+    to:
+    - 'off'
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.geyser
+  mode: single
+- id: '1780083836111'
+  alias: Turn on Pool
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - schedule.pool
+    to:
+    - 'on'
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 7ecff29c906f046dea967aabe523ec9b
+    entity_id: a59fd61561ea592a2c474271adfaa123
+    domain: switch
+  mode: single
+- id: '1780083905231'
+  alias: Turn off Pool
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - schedule.pool
+    to:
+    - 'off'
+  conditions: []
   actions:
   - type: turn_off
-    device_id: 3c68de0a3595fec2b4f5b7034871cc39
-    entity_id: acc6def2b8fb7a8593bbe7bcd0520b5b
-    domain: light
+    device_id: 7ecff29c906f046dea967aabe523ec9b
+    entity_id: a59fd61561ea592a2c474271adfaa123
+    domain: switch
   mode: single
