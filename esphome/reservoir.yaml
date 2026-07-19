@@ -54,6 +54,18 @@ number:
     optimistic: true
     restore_value: true
     entity_category: config
+  - platform: template
+    name: "Reservoir Tank Depth"
+    id: tank_depth
+    icon: "mdi:tape-measure"
+    unit_of_measurement: "m"
+    min_value: 0.01
+    max_value: 2
+    step: 0.001
+    initial_value: 1.640
+    optimistic: true
+    restore_value: true
+    entity_category: config
 
 sensor:
   # ===================================================================
@@ -120,6 +132,20 @@ sensor:
       float mv = id(reservoir_level_voltage).state * 1000.0;
       float ma = mv / 120.0;
       return (ma - 4.0) * (5.0 / 16.0);
+
+  - platform: template
+    name: "Reservoir Percentage"
+    id: reservoir_percentage
+    unit_of_measurement: "m"
+    device_class: distance
+    state_class: measurement
+    accuracy_decimals: 2
+    update_interval: 5s
+    lambda: |-
+      // percentage = depth(m) / tank_depth(m)
+      float depth = id(reservoir_depth).state;
+      float total = id(tank_depth).state;
+      return (depth / total) * 100;
 
   - platform: template
     name: "Reservoir Volume"
