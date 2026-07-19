@@ -28,7 +28,7 @@ number:
   - platform: template
     name: "Temperature Minimum"
     id: geyser_temp_min
-    icon: mdi:thermometer-plus
+    icon: mdi:thermometer-chevron-down
     entity_category: config
     optimistic: true
     restore_value: true
@@ -40,7 +40,7 @@ number:
   - platform: template
     name: "Temperature Maximum"
     id: geyser_temp_max
-    icon: mdi:thermometer-plus
+    icon: mdi:thermometer-chevron-up
     entity_category: config
     optimistic: true
     restore_value: true
