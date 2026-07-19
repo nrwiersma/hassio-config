@@ -136,6 +136,7 @@ sensor:
   - platform: template
     name: "Reservoir Percentage"
     id: reservoir_percentage
+    icon: "mdi:percent"
     unit_of_measurement: "%"
     state_class: measurement
     accuracy_decimals: 2
