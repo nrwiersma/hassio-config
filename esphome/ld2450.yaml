@@ -1,0 +1,760 @@
+esphome:
+  project:
+    name: Sentinel
+    version: "0.1.0"
+  name: ld2450-radar
+  friendly_name: LD2450 Radar
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+    version: recommended
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 1100ms
+    window: 1100ms
+    active: true
+
+# IMPORTANT: GPIO1 (TX0) / GPIO3 (RX0) are the ESP32's default hardware UART0 pins,
+# which ESPHome's logger uses over USB-serial by default. Since we're repurposing
+# them for the LD2450, the UART logger must be disabled or you'll get corrupted
+# LD2450 frames and/or corrupted log output. Use network logging instead (view logs
+# via `esphome logs` over WiFi/OTA, or the "Logger Websocket" in the web dashboard).
+logger:
+  baud_rate: 0
+
+api:
+
+http_request:
+  verify_ssl: false
+
+ota:
+  - platform: esphome
+  - platform: http_request
+    id: ota_http_request
+
+wifi:
+
+esp32_improv:
+  authorizer: none
+
+bluetooth_proxy:
+  active: true
+
+# -- LD2450 radar module configuration --
+uart:
+  id: uart_ld2450
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+ld2450:
+  id: ld2450_radar
+  uart_id: uart_ld2450
+  on_data:
+    - lambda: |-
+        struct Poly { float vx[20]; float vy[20]; int count; };
+        static Poly zones[4], exclusions[2];
+
+        if (!id(poly_initialized)) {
+          auto parse = [](const std::string &text, Poly &poly) {
+            poly.count = 0;
+            size_t pos = 0;
+            while (pos < text.length() && poly.count < 20) {
+              int x, y, n;
+              if (sscanf(text.c_str() + pos, "%d:%d%n", &x, &y, &n) == 2) {
+                poly.vx[poly.count] = (float)x;
+                poly.vy[poly.count] = (float)y;
+                poly.count++;
+                pos += n;
+                if (pos < text.length() && text[pos] == ';') pos++;
+              } else {
+                break;
+              }
+            }
+          };
+          parse(id(poly_zone_1).state, zones[0]);
+          parse(id(poly_zone_2).state, zones[1]);
+          parse(id(poly_zone_3).state, zones[2]);
+          parse(id(poly_zone_4).state, zones[3]);
+          parse(id(poly_exclusion_1).state, exclusions[0]);
+          parse(id(poly_exclusion_2).state, exclusions[1]);
+          id(poly_initialized) = true;
+        }
+
+        auto in_poly = [](float px, float py, const Poly &poly) -> bool {
+          if (poly.count < 3) return false;
+          bool inside = false;
+          for (int i = 0, j = poly.count - 1; i < poly.count; j = i++) {
+            float xi = poly.vx[i], yi = poly.vy[i];
+            float xj = poly.vx[j], yj = poly.vy[j];
+            if (((yi > py) != (yj > py)) &&
+                (px < (xj - xi) * (py - yi) / (yj - yi) + xi)) {
+              inside = !inside;
+            }
+          }
+          return inside;
+        };
+
+        int detail = id(extra_entities);  // 0=Targets Position .. 4=Speed and Resolution (see select below)
+
+        decltype(id(target1_x)) pos_x[] = {id(target1_x), id(target2_x), id(target3_x)};
+        decltype(id(target1_y)) pos_y[] = {id(target1_y), id(target2_y), id(target3_y)};
+        decltype(id(target1_active)) actives[] = {id(target1_active), id(target2_active), id(target3_active)};
+        decltype(id(target1_distance)) distances[] = {id(target1_distance), id(target2_distance), id(target3_distance)};
+        decltype(id(target1_angle)) angles[] = {id(target1_angle), id(target2_angle), id(target3_angle)};
+        decltype(id(target1_speed)) speeds[] = {id(target1_speed), id(target2_speed), id(target3_speed)};
+        decltype(id(target1_resolution)) resolutions[] = {id(target1_resolution), id(target2_resolution), id(target3_resolution)};
+
+        decltype(id(zone1_target_count)) zone_counts[] = {id(zone1_target_count), id(zone2_target_count), id(zone3_target_count), id(zone4_target_count)};
+        decltype(id(zone1_occupancy)) zone_presence[] = {id(zone1_occupancy), id(zone2_occupancy), id(zone3_occupancy), id(zone4_occupancy)};
+        decltype(id(mask1_target_count)) mask_counts[] = {id(mask1_target_count), id(mask2_target_count)};
+        int counts[4] = {0, 0, 0, 0};
+        int masked[2] = {0, 0};
+
+        for (int t = 0; t < 3; t++) {
+          // The templates apply the mounting-angle correction and the detection
+          // range cutoff, so x/y are already in "true" forward/center coordinates.
+          pos_x[t]->update();
+          pos_y[t]->update();
+          float x = pos_x[t]->state, y = pos_y[t]->state;
+          bool valid = !(std::isnan(x) || std::isnan(y));
+
+          // Exclusion zones take priority: a masked target counts toward no
+          // tracking zone and is reported as if it were not detected at all.
+          if (valid) {
+            for (int e = 0; e < 2; e++) {
+              if (in_poly(x, y, exclusions[e])) {
+                masked[e]++;
+                valid = false;
+              }
+            }
+          }
+          if (!valid) {
+            pos_x[t]->publish_state(NAN);
+            pos_y[t]->publish_state(NAN);
+          } else {
+            for (int z = 0; z < 4; z++) {
+              if (in_poly(x, y, zones[z])) counts[z]++;
+            }
+          }
+
+          if (detail >= 2) actives[t]->publish_state(valid);
+          if (detail >= 3) {
+            distances[t]->update();
+            angles[t]->update();
+          }
+          if (detail >= 4) {
+            speeds[t]->update();
+            resolutions[t]->update();
+          }
+        }
+
+        for (int z = 0; z < 4; z++) {
+          if (detail >= 1) zone_counts[z]->publish_state(counts[z]);
+          zone_presence[z]->publish_state(counts[z] > 0);
+        }
+        if (detail >= 1) {
+          for (int e = 0; e < 2; e++) mask_counts[e]->publish_state(masked[e]);
+        }
+
+# Turn off the module's own firmware-level zone filtering; we do zones ourselves
+# below so we aren't limited to 3 rectangles or a single inclusion/exclusion mode.
+select:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    zone_type:
+      name: "LD2450 Zone Type"
+      id: ld2450_zone_type
+      internal: true
+
+  # Controls how many diagnostic entities get updated each report, so you can
+  # trade off granularity against Home Assistant state-update churn.
+  - platform: template
+    name: "Target Tracking Behaviour"
+    id: ld2450_tracking_behaviour
+    icon: "mdi:dots-vertical"
+    optimistic: true
+    restore_value: true
+    entity_category: config
+    options:
+      - Targets Position
+      - Above + Zone count
+      - Above + Targets active
+      - Above + Distance and Angle
+      - Above + Speed and Resolution
+    initial_option: Above + Speed and Resolution
+    on_value:
+      then:
+        - lambda: |-
+            id(extra_entities) = i;
+            // Clear anything above the newly selected tier immediately, rather
+            // than waiting for the next radar report to publish stale NaNs.
+            if (i < 4) {
+              id(target1_speed).publish_state(NAN);
+              id(target2_speed).publish_state(NAN);
+              id(target3_speed).publish_state(NAN);
+              id(target1_resolution).publish_state(NAN);
+              id(target2_resolution).publish_state(NAN);
+              id(target3_resolution).publish_state(NAN);
+            }
+            if (i < 3) {
+              id(target1_distance).publish_state(NAN);
+              id(target2_distance).publish_state(NAN);
+              id(target3_distance).publish_state(NAN);
+              id(target1_angle).publish_state(NAN);
+              id(target2_angle).publish_state(NAN);
+              id(target3_angle).publish_state(NAN);
+            }
+            if (i < 2) {
+              id(target1_active).publish_state(false);
+              id(target2_active).publish_state(false);
+              id(target3_active).publish_state(false);
+            }
+            if (i < 1) {
+              id(zone1_target_count).publish_state(NAN);
+              id(zone2_target_count).publish_state(NAN);
+              id(zone3_target_count).publish_state(NAN);
+              id(zone4_target_count).publish_state(NAN);
+              id(mask1_target_count).publish_state(NAN);
+              id(mask2_target_count).publish_state(NAN);
+            }
+
+switch:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    bluetooth:
+      name: "LD2450 Bluetooth"
+      disabled_by_default: true
+    multi_target:
+      name: "LD2450 Multi Target Tracking"
+
+button:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    factory_reset:
+      name: "LD2450 Factory Reset"
+      entity_category: config
+    restart:
+      name: "LD2450 Restart"
+      entity_category: config
+
+text_sensor:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    version:
+      name: "LD2450 Firmware"
+    mac_address:
+      name: "LD2450 BT MAC"
+
+  # Editable polygon zones. Format: "x1:y1;x2:y2;x3:y3;..." in millimeters,
+  # same coordinate system as the native target x/y sensors below.
+  # Leave a zone's text empty to disable it.
+
+text:
+  - platform: template
+    name: "Polygon Zone 1"
+    id: poly_zone_1
+    mode: text
+    optimistic: true
+    restore_value: true
+    initial_value: ""
+    entity_category: config
+    icon: "mdi:vector-polygon"
+    on_value:
+      - globals.set: { id: poly_initialized, value: 'false' }
+  - platform: template
+    name: "Polygon Zone 2"
+    id: poly_zone_2
+    mode: text
+    optimistic: true
+    restore_value: true
+    initial_value: ""
+    entity_category: config
+    icon: "mdi:vector-polygon"
+    on_value:
+      - globals.set: { id: poly_initialized, value: 'false' }
+  - platform: template
+    name: "Polygon Zone 3"
+    id: poly_zone_3
+    mode: text
+    optimistic: true
+    restore_value: true
+    initial_value: ""
+    entity_category: config
+    icon: "mdi:vector-polygon"
+    on_value:
+      - globals.set: { id: poly_initialized, value: 'false' }
+  - platform: template
+    name: "Polygon Zone 4"
+    id: poly_zone_4
+    mode: text
+    optimistic: true
+    restore_value: true
+    initial_value: ""
+    entity_category: config
+    icon: "mdi:vector-polygon"
+    on_value:
+      - globals.set: { id: poly_initialized, value: 'false' }
+  - platform: template
+    name: "Polygon Exclusion 1"
+    id: poly_exclusion_1
+    mode: text
+    optimistic: true
+    restore_value: true
+    initial_value: ""
+    entity_category: config
+    icon: "mdi:vector-polygon"
+    on_value:
+      - globals.set: { id: poly_initialized, value: 'false' }
+  - platform: template
+    name: "Polygon Exclusion 2"
+    id: poly_exclusion_2
+    mode: text
+    optimistic: true
+    restore_value: true
+    initial_value: ""
+    entity_category: config
+    icon: "mdi:vector-polygon"
+    on_value:
+      - globals.set: { id: poly_initialized, value: 'false' }
+
+globals:
+  - id: extra_entities
+    type: int
+    restore_value: false
+    initial_value: '4'    # Keep in sync with the "Target Tracking Behaviour" select above.
+  - id: poly_initialized
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+
+number:
+  - platform: template
+    name: "Tracking Sensor Angle"
+    id: ld2450_installation_angle
+    entity_category: config
+    unit_of_measurement: "º"
+    min_value: -45
+    max_value: 45
+    step: 1
+    optimistic: true
+    restore_value: true
+    initial_value: 0
+    icon: "mdi:angle-acute"
+  - platform: template
+    name: "Tracking Detection Range"
+    id: ld2450_max_distance
+    entity_category: config
+    unit_of_measurement: "cm"
+    min_value: 0
+    max_value: 600
+    step: 1
+    optimistic: true
+    restore_value: true
+    initial_value: 600
+
+# --- Native target position/speed/etc data (this is the part we let ESPHome core handle) ---
+sensor:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    target_count:
+      name: "Presence Target Count"
+    still_target_count:
+      name: "Still Target Count"
+    moving_target_count:
+      name: "Moving Target Count"
+
+    # All raw per-target fields are pulled in internal — they feed the zone math
+    # and the gated diagnostic sensors below rather than being shown directly.
+    target_1:
+      x: { id: t1_x, internal: true }
+      y: { id: t1_y, internal: true }
+      speed: { id: t1_speed, internal: true }
+      resolution: { id: t1_resolution, internal: true }
+    target_2:
+      x: { id: t2_x, internal: true }
+      y: { id: t2_y, internal: true }
+      speed: { id: t2_speed, internal: true }
+      resolution: { id: t2_resolution, internal: true }
+    target_3:
+      x: { id: t3_x, internal: true }
+      y: { id: t3_y, internal: true }
+      speed: { id: t3_speed, internal: true }
+      resolution: { id: t3_resolution, internal: true }
+
+  # --- Adjusted positions ---
+  # These templates own the coordinate math: they reject empty target slots,
+  # apply the Tracking Detection Range cutoff, and correct for a physically
+  # angled/rotated mounting so zone coordinates can stay defined relative to
+  # "true" forward/center. NaN means "no valid target in this slot".
+  - platform: template
+    name: "Target 1 X"
+    id: target1_x
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    lambda: |-
+      float rx = id(t1_x).state, ry = id(t1_y).state;
+      if (std::isnan(rx) || std::isnan(ry) || (rx == 0 && ry == 0)) return NAN;
+      float dist = sqrtf(rx * rx + ry * ry);
+      if (dist > id(ld2450_max_distance).state * 10.0f) return NAN;  // cm -> mm
+      float a = id(ld2450_installation_angle).state * (3.14159265358979323846f / 180.0f);
+      if (a == 0) return rx;
+      return dist * cosf(atan2f(ry, rx) - a);
+  - platform: template
+    name: "Target 1 Y"
+    id: target1_y
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    lambda: |-
+      float rx = id(t1_x).state, ry = id(t1_y).state;
+      if (std::isnan(rx) || std::isnan(ry) || (rx == 0 && ry == 0)) return NAN;
+      float dist = sqrtf(rx * rx + ry * ry);
+      if (dist > id(ld2450_max_distance).state * 10.0f) return NAN;  // cm -> mm
+      float a = id(ld2450_installation_angle).state * (3.14159265358979323846f / 180.0f);
+      if (a == 0) return ry;
+      return dist * sinf(atan2f(ry, rx) - a);
+  - platform: template
+    name: "Target 2 X"
+    id: target2_x
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float rx = id(t2_x).state, ry = id(t2_y).state;
+      if (std::isnan(rx) || std::isnan(ry) || (rx == 0 && ry == 0)) return NAN;
+      float dist = sqrtf(rx * rx + ry * ry);
+      if (dist > id(ld2450_max_distance).state * 10.0f) return NAN;  // cm -> mm
+      float a = id(ld2450_installation_angle).state * (3.14159265358979323846f / 180.0f);
+      if (a == 0) return rx;
+      return dist * cosf(atan2f(ry, rx) - a);
+  - platform: template
+    name: "Target 2 Y"
+    id: target2_y
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float rx = id(t2_x).state, ry = id(t2_y).state;
+      if (std::isnan(rx) || std::isnan(ry) || (rx == 0 && ry == 0)) return NAN;
+      float dist = sqrtf(rx * rx + ry * ry);
+      if (dist > id(ld2450_max_distance).state * 10.0f) return NAN;  // cm -> mm
+      float a = id(ld2450_installation_angle).state * (3.14159265358979323846f / 180.0f);
+      if (a == 0) return ry;
+      return dist * sinf(atan2f(ry, rx) - a);
+  - platform: template
+    name: "Target 3 X"
+    id: target3_x
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float rx = id(t3_x).state, ry = id(t3_y).state;
+      if (std::isnan(rx) || std::isnan(ry) || (rx == 0 && ry == 0)) return NAN;
+      float dist = sqrtf(rx * rx + ry * ry);
+      if (dist > id(ld2450_max_distance).state * 10.0f) return NAN;  // cm -> mm
+      float a = id(ld2450_installation_angle).state * (3.14159265358979323846f / 180.0f);
+      if (a == 0) return rx;
+      return dist * cosf(atan2f(ry, rx) - a);
+  - platform: template
+    name: "Target 3 Y"
+    id: target3_y
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float rx = id(t3_x).state, ry = id(t3_y).state;
+      if (std::isnan(rx) || std::isnan(ry) || (rx == 0 && ry == 0)) return NAN;
+      float dist = sqrtf(rx * rx + ry * ry);
+      if (dist > id(ld2450_max_distance).state * 10.0f) return NAN;  // cm -> mm
+      float a = id(ld2450_installation_angle).state * (3.14159265358979323846f / 180.0f);
+      if (a == 0) return ry;
+      return dist * sinf(atan2f(ry, rx) - a);
+
+  # Diagnostic: how many targets currently fall inside each custom zone
+  # Tier 1+ ("Above + Zone count" and above)
+  - platform: template
+    name: "Zone 1 Target Count"
+    id: zone1_target_count
+    accuracy_decimals: 0
+    unit_of_measurement: " "
+    entity_category: diagnostic
+  - platform: template
+    name: "Zone 2 Target Count"
+    id: zone2_target_count
+    accuracy_decimals: 0
+    unit_of_measurement: " "
+    entity_category: diagnostic
+    disabled_by_default: true
+  - platform: template
+    name: "Zone 3 Target Count"
+    id: zone3_target_count
+    accuracy_decimals: 0
+    unit_of_measurement: " "
+    entity_category: diagnostic
+    disabled_by_default: true
+  - platform: template
+    name: "Zone 4 Target Count"
+    id: zone4_target_count
+    accuracy_decimals: 0
+    unit_of_measurement: " "
+    entity_category: diagnostic
+    disabled_by_default: true
+
+  # Diagnostic: how many targets are currently being masked out by each
+  # exclusion zone. Useful for tuning an exclusion polygon.
+  - platform: template
+    name: "Mask 1 Target Count"
+    id: mask1_target_count
+    accuracy_decimals: 0
+    unit_of_measurement: " "
+    entity_category: diagnostic
+    disabled_by_default: true
+  - platform: template
+    name: "Mask 2 Target Count"
+    id: mask2_target_count
+    accuracy_decimals: 0
+    unit_of_measurement: " "
+    entity_category: diagnostic
+    disabled_by_default: true
+
+  # --- Distance / Angle diagnostics ---
+  # Tier 3+ ("Above + Distance and Angle" and above)
+  - platform: template
+    name: "Target 1 Distance"
+    id: target1_distance
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    lambda: |-
+      float x = id(target1_x).state, y = id(target1_y).state;
+      if (std::isnan(x)) return NAN;
+      return sqrtf(x * x + y * y);
+  - platform: template
+    name: "Target 1 Angle"
+    id: target1_angle
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "°"
+    state_class: measurement
+    entity_category: diagnostic
+    lambda: |-
+      float x = id(target1_x).state, y = id(target1_y).state;
+      if (std::isnan(x)) return NAN;
+      return atan2f(y, x) * (180.0f / 3.14159265358979323846f);
+  - platform: template
+    name: "Target 2 Distance"
+    id: target2_distance
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float x = id(target2_x).state, y = id(target2_y).state;
+      if (std::isnan(x)) return NAN;
+      return sqrtf(x * x + y * y);
+  - platform: template
+    name: "Target 2 Angle"
+    id: target2_angle
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "°"
+    state_class: measurement
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float x = id(target2_x).state, y = id(target2_y).state;
+      if (std::isnan(x)) return NAN;
+      return atan2f(y, x) * (180.0f / 3.14159265358979323846f);
+  - platform: template
+    name: "Target 3 Distance"
+    id: target3_distance
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float x = id(target3_x).state, y = id(target3_y).state;
+      if (std::isnan(x)) return NAN;
+      return sqrtf(x * x + y * y);
+  - platform: template
+    name: "Target 3 Angle"
+    id: target3_angle
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "°"
+    state_class: measurement
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      float x = id(target3_x).state, y = id(target3_y).state;
+      if (std::isnan(x)) return NAN;
+      return atan2f(y, x) * (180.0f / 3.14159265358979323846f);
+
+  # --- Speed / Resolution diagnostics ---
+  # Tier 4 ("Above + Speed and Resolution")
+  - platform: template
+    name: "Target 1 Speed"
+    id: target1_speed
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm/s"
+    state_class: measurement
+    device_class: speed
+    entity_category: diagnostic
+    lambda: |-
+      if (std::isnan(id(target1_x).state)) return NAN;
+      return id(t1_speed).state;
+  - platform: template
+    name: "Target 1 Resolution"
+    id: target1_resolution
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    lambda: |-
+      if (std::isnan(id(target1_x).state)) return NAN;
+      return id(t1_resolution).state;
+  - platform: template
+    name: "Target 2 Speed"
+    id: target2_speed
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm/s"
+    state_class: measurement
+    device_class: speed
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      if (std::isnan(id(target2_x).state)) return NAN;
+      return id(t2_speed).state;
+  - platform: template
+    name: "Target 2 Resolution"
+    id: target2_resolution
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      if (std::isnan(id(target2_x).state)) return NAN;
+      return id(t2_resolution).state;
+  - platform: template
+    name: "Target 3 Speed"
+    id: target3_speed
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm/s"
+    state_class: measurement
+    device_class: speed
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      if (std::isnan(id(target3_x).state)) return NAN;
+      return id(t3_speed).state;
+  - platform: template
+    name: "Target 3 Resolution"
+    id: target3_resolution
+    update_interval: never
+    accuracy_decimals: 0
+    unit_of_measurement: "mm"
+    state_class: measurement
+    device_class: distance
+    entity_category: diagnostic
+    disabled_by_default: true
+    lambda: |-
+      if (std::isnan(id(target3_x).state)) return NAN;
+      return id(t3_resolution).state;
+
+binary_sensor:
+  - platform: ld2450
+    ld2450_id: ld2450_radar
+    has_target:
+      name: "Presence"
+    has_moving_target:
+      name: "Moving Target"
+    has_still_target:
+      name: "Still Target"
+
+  - platform: template
+    name: "Zone 1 Presence"
+    id: zone1_occupancy
+    device_class: occupancy
+    filters:
+      - delayed_off: 5s
+  - platform: template
+    name: "Zone 2 Presence"
+    id: zone2_occupancy
+    device_class: occupancy
+    filters:
+      - delayed_off: 5s
+  - platform: template
+    name: "Zone 3 Presence"
+    id: zone3_occupancy
+    device_class: occupancy
+    filters:
+      - delayed_off: 5s
+  - platform: template
+    name: "Zone 4 Presence"
+    id: zone4_occupancy
+    device_class: occupancy
+    filters:
+      - delayed_off: 5s
+
+  # Tier 2+ ("Above + Targets active" and above): whether each target slot
+  # currently holds a valid detection (passed distance/exclusion filtering).
+  - platform: template
+    name: "Target 1 Active"
+    id: target1_active
+    entity_category: diagnostic
+  - platform: template
+    name: "Target 2 Active"
+    id: target2_active
+    entity_category: diagnostic
+    disabled_by_default: true
+  - platform: template
+    name: "Target 3 Active"
+    id: target3_active
+    entity_category: diagnostic
+    disabled_by_default: true
