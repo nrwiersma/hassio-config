@@ -1,6 +1,6 @@
 esphome:
   project:
-    name: Sentinel
+    name: Sentinel.Sentinel
     version: "0.1.0"
   name: ld2450-radar
   friendly_name: LD2450 Radar
@@ -45,7 +45,7 @@ bluetooth_proxy:
 
 # -- LD2450 radar module configuration --
 uart:
-  id: uart_ld2450
+  id: uart_bus
   tx_pin: GPIO1
   rx_pin: GPIO3
   baud_rate: 256000
@@ -54,7 +54,7 @@ uart:
 
 ld2450:
   id: ld2450_radar
-  uart_id: uart_ld2450
+  uart_id: uart_bus
   on_data:
     - lambda: |-
         struct Poly { float vx[20]; float vy[20]; int count; };
