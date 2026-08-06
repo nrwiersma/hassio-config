@@ -29,10 +29,6 @@ energy:
 
 hassio:
 
-http:
-  cors_allowed_origins:
-    - "http://localhost:8080"
-
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
